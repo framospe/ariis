@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+
+	<!-- Categoria de Clientes -->
+	<data noupdate="1">
+	
+		
+		<!-- ===================== -->
+		<!-- Tipo Monitorizacion   -->
+		<!-- ===================== -->
+		<record id="ariis_tipomonitorizacion_00" model="ariis.tipomonitorizacion">
+			<field name="name">No Monitorizar</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_01" model="ariis.tipomonitorizacion">
+			<field name="name">MIR</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_02" model="ariis.tipomonitorizacion">
+			<field name="name">DCA</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_03" model="ariis.tipomonitorizacion">
+			<field name="name">Ficheros</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_04" model="ariis.tipomonitorizacion">
+			<field name="name">Mapa de Menu</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_05" model="ariis.tipomonitorizacion">
+			<field name="name">No Disponible</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_06" model="ariis.tipomonitorizacion">
+			<field name="name">USB</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_07" model="ariis.tipomonitorizacion">
+			<field name="name">Backup</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_08" model="ariis.tipomonitorizacion">
+			<field name="name">Mail</field>
+		</record>
+		<record id="ariis_tipomonitorizacion_99" model="ariis.tipomonitorizacion">
+			<field name="name">Otros</field>
+		</record>
+		<!-- ======================= -->
+		<!-- Estado de Dispositivo   -->
+		<!-- ======================= -->
+		<record id="ariis_estadodispositivo_00" model="ariis.estadodispositivo">
+			<field name="name">No Monitorizar</field>
+		</record>
+		<record id="ariis_estadodispositivo_01" model="ariis.estadodispositivo">
+			<field name="name">OK (Reportando)</field>
+		</record>
+		<record id="ariis_estadodispositivo_02" model="ariis.estadodispositivo">
+			<field name="name">Averiado</field>
+		</record>
+		<record id="ariis_estadodispositivo_03" model="ariis.estadodispositivo">
+			<field name="name">Desconocido</field>
+		</record>
+		<record id="ariis_estadodispositivo_04" model="ariis.estadodispositivo">
+			<field name="name">Toner Bajo</field>
+		</record>
+		<record id="ariis_estadodispositivo_05" model="ariis.estadodispositivo">
+			<field name="name">Sin Noticias</field>
+		</record>
+		<record id="ariis_estadodispositivo_06" model="ariis.estadodispositivo">
+			<field name="name">No Instalado</field>
+		</record>
+		<record id="ariis_estadodispositivo_07" model="ariis.estadodispositivo">
+			<field name="name">Retirado</field>
+		</record>
+		<record id="ariis_estadodispositivo_08" model="ariis.estadodispositivo">
+			<field name="name">No Responde</field>
+		</record>
+		<record id="ariis_estadodispositivo_09" model="ariis.estadodispositivo">
+			<field name="name">Error Monitorizando</field>
+		</record>
+		<record id="ariis_estadodispositivo_10" model="ariis.estadodispositivo">
+			<field name="name">Datos Incorrectos</field>
+		</record>
+		<record id="ariis_estadodispositivo_11" model="ariis.estadodispositivo">
+			<field name="name">Direccion de maquina no es valida</field>
+		</record>
+		<record id="ariis_estadodispositivo_12" model="ariis.estadodispositivo">
+			<field name="name">Direccion de Servidor o direccion IP no validos</field>
+		</record>
+		<record id="ariis_estadodispositivo_13" model="ariis.estadodispositivo">
+			<field name="name">Sin Servicio</field>
+		</record>
+		<record id="ariis_estadodispositivo_14" model="ariis.estadodispositivo">
+			<field name="name">Duplicada</field>
+		</record>
+		<record id="ariis_estadodispositivo_15" model="ariis.estadodispositivo">
+			<field name="name">Baja</field>
+		</record>
+		<record id="ariis_estadodispositivo_16" model="ariis.estadodispositivo">
+			<field name="name">Reparandose (Taller)</field>
+		</record>
+		<record id="ariis_estadodispositivo_17" model="ariis.estadodispositivo">
+			<field name="name">Instalado</field>
+		</record>
+
+	</data>
+	
+</odoo>

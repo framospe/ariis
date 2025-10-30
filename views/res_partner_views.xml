@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+    <data>
+		<record id="view_partner_property_form_ariis" model="ir.ui.view">
+			<field name="name">res.partner.property.form.inherit</field>
+			<field name="model">res.partner</field>
+			<field name="priority">1</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+			<field name="arch" type="xml">
+                <div name="button_box" position="inside">
+					 <button name="toggle_is_bloqueado" 
+								type="object" 
+								class="oe_stat_button" 
+								icon="fa-unlock" 
+								confirm="Desea Bloquear el actual cliente" 
+								groups="ariis.ariis_grupo_gestion" 
+								invisible="is_bloqueado==True or company_type!='company'"
+                                >
+                            <field 	name="is_bloqueado" 
+									widget="boolean_button" 
+									options="{'terminology':{ 'string_true'	: 'Bloqueado',
+															 'hover_true'	: 'Desbloquear',
+															 'string_false'	: 'Sin Bloqueo',
+															 'hover_false'	: 'Bloquear' }}"/>
+					</button>
+					<button name="toggle_is_bloqueado" type="object" class="oe_stat_button" icon="fa-lock" 
+							confirm="Desea Desbloquear el actual cliente" 
+							groups="ariis.ariis_grupo_gestion" 
+							invisible="is_bloqueado==False or company_type!='company'" >
+                            <field name="is_bloqueado" widget="boolean_button" 
+							options="{'terminology':{ 'string_true'	: 'Bloqueado',
+													 'hover_true'	: 'Desbloquear',
+													 'string_false'	: 'Sin Bloqueo',
+													 'hover_false'	: 'Bloquear' }}"/>
+					</button>
+					
+				</div>
+				<xpath expr="//notebook[last()]" position="inside">
+					<page string="Ariis" name="ariis"  invisible="ariis_id==False" >
+						<group>
+							<group> 
+								<field name="ariis_id"   />
+								<field name="alta"   />
+								<!-- <field name="categoria"  />	 -->
+								<field name="is_preventivo" widget="boolean_toggle" /> 
+							</group>
+							<group>
+								<field name="distancia"  /> 
+								<field name="monitorizar_cada"   />
+								<field name="solicitasuministros"  />
+								<field name="horario"  string="Horario"   />
+							</group>
+						</group>
+						 
+					</page>
+				</xpath>
+				
+			</field>
+		</record>
+	</data>
+    
+	<record id="inherit_view_partner_tree" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree" />
+            <field name="arch" type="xml">
+                <field name="phone" position="before">
+					 <field name="state_id" />
+                     <field name="city" />
+					  <field name="street" />
+                </field>
+            </field>
+	</record>
+	
+	<record id="view_res_partner_filter" model="ir.ui.view">
+		<field name="name">view.res.partner.filter.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_res_partner_filter"/>
+		<field name="arch" type="xml">
+			<field name="name" position="after">
+				<field name="vat"/>
+			</field>
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <filter name="clientes_cxc" string="Clientes CXC"  domain="[('ariis_id','!=',False)]"/>
+            </xpath>
+		</field>
+	</record>
+	
+     <record id="action_partner_form" model="ir.actions.act_window">
+            <field name="name">Clientes CXC</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+            <field name="context">{'search_default_clientes_cxc': True }</field>
+            <!-- <field name="search_view_id" ref="base.view_res_partner_filter"/> -->
+    </record>
+    
+	<!-- Partner kanban view inherte -->
+	<record model="ir.ui.view" id="ariis_bloqueo_partner_kanban_view">
+		<field name="name">res.partner.kanban.bloqueo.inherit</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.res_partner_kanban_view"/>
+		<field name="priority" eval="22"/>
+		<field name="arch" type="xml">
+			<field name="mobile" position="after">
+                    <field name="is_bloqueado"/>
+                </field>
+			<xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
+				<t t-if="record.is_company.raw_value === true" >
+					<span  class="badge-pill badge-primary" t-if="record.is_bloqueado.raw_value === true"><i class="fa fa-lock" title="Cliente Bloqueado"/></span>
+				</t>
+			</xpath>
+		</field>
+	</record>
+	
+    <menuitem name="Clientes" 
+        id="ariis.cliente_list" 
+        parent="ariis.cliente_menu" 
+        action="action_partner_form" 
+        sequence="1"/>
+                
+</odoo>

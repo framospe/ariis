@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+	<data noupdate="0">
+		<!-- ===================== -->
+		<!-- Grupos de Aplicacion -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_usuario" model="res.groups">
+			<field name="name">Usuario</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+			<field name="menu_access" eval="[(4, ref('ariis.menu_ariis'))]"/>
+		</record>
+		<!-- ===================== -->
+		<!-- Tecnico -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_tecnico" model="res.groups">
+			<field name="name">Técnico</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_usuario'))]"/> 
+			<field name="menu_access" eval="[(4, ref('ariis.dispositivo_menu')),
+											 (4, ref('ariis.aviso_menu'))]"/> 			
+		</record>
+		<!-- ===================== -->
+		<!-- Responsable -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_responsable" model="res.groups">
+			<field name="name">Responsable</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_usuario'))]"/> 
+			<field name="menu_access" eval="[(4, ref('ariis.dispositivo_menu')),
+											 (4, ref('ariis.aviso_menu'))]"/>
+		</record>
+		<!-- ===================== -->
+		<!-- Gestión -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_gestion" model="res.groups">
+			<field name="name">Gestión</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_responsable')),
+											 (4, ref('stock.group_production_lot')),
+											]"/> 
+		</record>
+		<!-- ===================== -->
+		<!-- Responsable Técnico -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_responsable_tecnico" model="res.groups">
+			<field name="name">Responsable Técnico</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_tecnico')),
+											 (4, ref('stock.group_production_lot'))]"/>
+			<field name="menu_access" eval="[(4, ref('ariis.dispositivo_menu')) ]"/>
+		</record> 
+		<!-- ===================== -->
+		<!-- Comercial -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_comercial" model="res.groups">
+			<field name="name">Comercial</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_usuario'))]"/>
+			<field name="menu_access" eval="[(4, ref('ariis.dispositivo_menu'))]"/>
+		</record> 
+		<!-- ===================== -->
+		<!-- Mantenimiento -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_mantenimiento" model="res.groups">
+			<field name="name">Mantenimiento</field>
+			<field name="category_id" ref="module_category_ariis_management" /> 
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_tecnico'))]"/>
+		</record> 
+		<!-- ===================== -->
+		<!-- Taller -->
+		<!-- ===================== -->
+		<record id="ariis_grupo_taller" model="res.groups">
+			<field name="category_id" ref="module_category_ariis_management" />
+			<field name="name">Taller</field>
+			<field name="implied_ids" eval="[(4, ref('ariis.ariis_grupo_tecnico'))]"/>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="hr_equipment_action" model="ir.actions.act_window">
+        <field name="name">Equipos</field>
+        <field name="res_model">maintenance.equipment</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="view_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="context">{
+            'search_default_impresoras_mir': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Añade un nuevo Equipo
+            </p><p>
+                Track equipment and link it to an employee or department.
+                You will be able to manage allocations, issues and maintenance of your equipment.
+            </p>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="hr_equipment_view_search">
+        <field name="name">equipment.search.mir</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_search" />
+        <field name="arch" type="xml">
+			<xpath expr="//filter[@name='available']" position="after">
+                <filter string="Impresoras MIR" name="impresoras_mir" domain="[('mir', '=', True)]"/>
+            </xpath>
+            <xpath expr="//filter[@name='vendor']" position="after">
+                <filter string="Por Cliente" name="por_cliente" domain="[('mir', '=', True)]" context="{'group_by': 'partner_id'}" />
+                <filter string="Por Monitorizacion" name="por_monitorizacion" domain="[('mir', '=', True)]" context="{'group_by': 'monitorizacion_id'}" />
+            </xpath>
+        </field>
+        <!-- <xpath expr="//field[@name='owner_user_id']" position="after"> -->
+            <!-- <field name="partner_id"/> -->
+            <!-- <field name="ariis_id"/> -->
+        <!-- </xpath> -->
+    </record>
+    
+     <record id="hr_equipment_view_form" model="ir.ui.view">
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form" />
+        <field name="arch" type="xml">
+            <!-- ========== Inicio ocultar segun mir==True ============ -->
+             <xpath expr="//group[1]" position="attributes">
+                <attribute name="invisible">mir==True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='product_information']" position="attributes">
+                <attribute name="invisible">mir==True</attribute>
+            </xpath>
+            <!-- ========== Fin ocultar segun mir==True ============ -->
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <field
+                    name="image_1920"
+                    widget="image"
+                    class="oe_avatar"
+                    options='{"preview_image": "image_128"}'
+                />
+            </xpath>
+            <xpath expr="//group" position="before">
+                <group invisible="mir==False">
+                    <group>
+                        <field name="lot_id" options="{'no_create': True}"   string="Nº de Serie" />
+                        <field name="product_id" options="{'no_create': True}"  string="Producto"    />
+                        <field name="nombre"  />
+                        <field name="mir" invisible="1" />
+                        <field name="iscolor"  invisible="1"/>
+                    </group>
+                     <group>
+                        <field name="estado_id" readonly="1"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                </group>
+			</xpath> 
+			<!-- <xpath expr="//field[@name='serial_no']" position="before"> -->
+				
+			<!-- </xpath>  -->
+			<xpath expr="//page[@name='description']" position="before">
+                <page string="Ubicación" name="general_information_ubicacion" invisible="mir==False">
+                    <group>
+                        <!-- <group> -->
+                            <field name="partner_id" string="Cliente"  options="{'no_create': True}" colspan="2" />
+                            <label for="address_id" class="oe_edit_only"/>
+                            <field 	name="address_id" class="oe_edit_only" nolabel="1"
+                                        options="{'always_reload': True , 'no_create': True}" 
+                                        context="{ 'show_address': True, 'show_address_only': True, 'show_email': False }" />
+                            <label for="direccion" class="oe_read_only" string="Dirección"/>
+                            <field name="direccion" class="oe_read_only" nolabel="1" />
+                            <field name="owner_id" string="Propietario" options="{'no_create': True}"/>
+                        <!-- </group> -->
+                    </group>
+                </page>
+				<page string="Datos Tecnicos" name="ariis_datostecnicos" invisible="mir==False">
+					<group>
+						<group>									
+							<field name="macaddress" string="Dirección MAC"/>
+							<field name="hostname" 	string="HostName"/>
+							<field name="ipaddress" string="Dirección IP"/>  
+							<field name="log_level" string="Nivel de Log"/> 
+							<field name="ariis_id" groups="base.group_system"/>									
+						</group>
+						<group >
+							<field name="iscolor" string="Color"/>
+							<field name="iscopiadora" string="Copiadora"/>
+							<field name="isscanner" 	string="Escaner"/>
+							<field name="isfax" string="Fax"/>
+						</group>
+					</group>
+				</page>
+				<page string="Paginas Impresas" name="general_paginaimpresas"  invisible="mir==False">
+					<group>
+						<group>
+							
+							<field name="total_bn" string="Total B/N"/>
+                            <field name="total_pag" string="Total Paginas" />
+						</group>
+						<group>
+							<field name="total_color" string="Total Color" invisible="iscolor==False"/> 
+						</group>
+					</group>
+				</page>
+                <page string="Fechas" name="general_fechas"  invisible="mir==False">
+					<group>
+						
+						<group>
+							<field name="instalado" string="Fecha Instalacion"/>
+							<field name="first_report" string="Primera actividad"/>
+							<field name="last_tried"  />
+							<field name="last_report" string="Ultima Actividad"/>
+						</group>
+                        <group>
+							<field name="assign_date"  />
+							<field name="scrap_date" />
+						</group>
+					</group>
+				</page>
+			</xpath>
+        </field>
+    </record>
+    
+    <record id="hr_equipment_view_kanban" model="ir.ui.view">
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban" />
+        <field name="arch" type="xml">
+            <field name="activity_state" position="after">
+                <field name="id" />
+                <field name="lot_id"/>
+                <field name="mir" />
+                <field name="iscolor"/>
+                <field name="product_id"/>
+                <field name="estado_id"/>
+            </field>
+            <xpath expr="//div[hasclass('oe_kanban_content')]" position="before">
+                <div class="o_kanban_image mr-1">
+                    <img
+                        t-att-src="kanban_image('maintenance.equipment', 'image_128', record.id.raw_value)"
+                        alt="Equipment"
+                        class="o_image_64_contain"
+                    />
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="replace">
+                <div class="o_kanban_record_body">
+                    <t t-if="!record.mir.raw_value">
+                        <div t-if="record.serial_no.raw_value"><field name="serial_no"/></div>
+                    </t>
+                    <t t-if="record.mir.raw_value">
+                        <h4 class="card-title">S/N: <field name="lot_id"/></h4>
+                        <span><b>Modelo: </b><field name="product_id"/></span><br/>
+                        <span><b>Nombre: </b><field name="name"/></span>
+                        <hr width="100%"/>
+                        <p class="card-text" id="propiedades">
+                            <small class="text-muted"><b>Cliente: </b><field name="partner_id"/></small> 
+                            <!-- <small class="text-muted"><br/><b>Dirección: </b><field name="direccion"/></small>  -->
+                            
+                            <small class="text-muted"><br/><b>Estado: </b><field name="estado_id"/></small>
+                            <small class="text-muted"><br/><b>Ultima actividad: </b><field name="last_report"/></small><br></br>
+                            <small class="text-muted"><b>Total BN: </b><field name="total_bn"/></small> 
+                              <t t-if="record.iscolor.raw_value">/
+                                <small class="text-muted"><b>Total Color: </b><field name="total_color"/></small>
+                              </t>
+                            / <small class="text-muted"><br/><b>Total Pag: </b><field name="total_pag"/></small>
+                        </p>
+                    </t>
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_inline_block')]" position="before">
+                <t t-if="record.estado_id.raw_value == '2' ">
+                   <i class="fa fa-3x fa-wifi" style="color:#ffa811; font-size: 20px;"/>
+                </t>
+            </xpath>
+            <xpath expr="//ul[hasclass('oe_kanban_tooltip')]" position="replace">
+                <ul class="oe_kanban_tooltip">
+                    <t t-if="!record.mir.raw_value">
+                        <li t-if="record.serial_no.raw_value"><b>Serial Number:</b> <t t-esc="record.serial_no.value"/></li>
+                        <li t-if="record.model.raw_value"><b>Model Number:</b> <t t-esc="record.model.value"/></li>
+                    </t>
+                </ul>
+            </xpath>
+            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="replace">
+                <!-- <div t-if="record.mir.raw_value" class="o_kanban_record_top"> -->
+                    <!-- <b class="o_kanban_record_title"><field name="name"/><small><span t-if="record.model.raw_value"> (<field name="model"/>)</span></small></b> -->
+                <!-- </div>       -->
+            </xpath>
+        </field>
+    </record>
+    
+    <menuitem
+        id="menu_equipment_form"
+        name="Equipos"
+        parent="ariis.dispositivo_menu"
+        action="ariis.hr_equipment_action"
+        groups="maintenance.group_equipment_manager,base.group_user"
+        sequence="1"/>
+</odoo>

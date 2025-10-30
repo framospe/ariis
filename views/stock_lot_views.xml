@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+    <record id="view_production_lot_form" model="ir.ui.view">
+        <field name="name">ariis.stock.production.lot.form</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="mir" invisible="1" /> 
+                    <button name="crear_dispositivo"	 
+                        groups="ariis.ariis_grupo_responsable_tecnico,ariis.ariis_grupo_gestion"  
+                        type="object" 
+                        string="Crear Equipo" 
+                        invisible="mir==False"
+                        class="oe_highlight" />
+                </header>
+            </xpath>
+        </field>
+    </record>
+    
+    <menuitem name="Numeros de Serie" 
+		action="stock.action_production_lot_form" 
+		id="menu_action_production_lot_form_ariis"
+        parent="ariis.dispositivo_menu" 
+		groups="stock.group_production_lot"
+        sequence="2"/>
+        
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+	<data>
+	
+		<record id="product_template_search_view_ariis" model="ir.ui.view">
+			<field name="name">product.template.ariis.search</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_search_view" /> 
+			<field name="arch" type="xml">
+				<xpath expr="/search/filter[@name='consumable']" position="after">
+					<filter string="Impresoras MIR" name="mirs" domain="[('mir','=',True)]"/>
+				</xpath>
+			</field>
+		</record>
+	
+		<record id="product_template_form_view_inherit" model="ir.ui.view">
+			<field name="name">product.template.form.inherit.ariis</field>
+			<field name="model">product.template</field>
+			<field name="priority">3</field>
+			<field name="inherit_id" ref="product.product_template_form_view" /> 
+			<field name="arch" type="xml">
+				<xpath expr="//notebook[last()]" position="inside">
+					<page string="Ariis" name="ariis_ProductTemplate" invisible="mir==False">
+						<group>
+							<group>
+								 <field name="ariis_id"  />
+								 <field name="mir" string="Monitorizable" />
+								 <!-- <field name="analytic_tag_id" string="Etiqueta Analitica" /> -->
+							</group>
+							<group >
+								<field name="iscolor" string="Color"/>
+								<field name="iscopiadora" string="Copiadora"/>
+								<field name="isscanner" 	string="Escaner"/>
+								<field name="isfax" string="Fax"/>
+							</group>
+						</group> 
+					</page>					
+				 </xpath>  
+			</field>
+		</record>
+		<!-- =========================================== -->
+		<!-- Añadir Departamento de SAT del producto     -->
+		<!-- en pestaña Inventario debajo de responsable -->
+		<!-- =========================================== -->
+		<!-- <record id="product_template_form_view__stock_inherit" model="ir.ui.view"> -->
+			<!-- <field name="name">product.template.form.inherit_ariis_stock</field> -->
+			<!-- <field name="model">product.template</field> -->
+			<!-- <field name="priority">4</field> -->
+			<!-- <field name="inherit_id" ref="stock.product_template_form_view_procurement_button" />  -->
+			<!-- <field name="arch" type="xml"> -->
+				<!-- <xpath expr="//field[@name='responsible_id']" position="after"> -->
+					<!-- <field name="department_sat" /> -->
+				<!-- </xpath> -->
+			<!-- </field> -->
+		<!-- </record> -->
+		
+		
+		<!-- <act_window name="Añadir Nuevo Nº Serie"   -->
+				<!-- res_model="stock.production.lot"		  -->
+				<!-- view_mode="form" -->
+				<!-- groups="ariis.ariis_grupo_gestion" -->
+				<!-- target="current"  -->
+				<!-- view_type="form" -->
+				<!-- src_model="product.template" -->
+				<!-- multi="False" -->
+				<!-- context="{'default_product_id' : active_id , 'product_id' : active_id}" -->
+				<!-- id="act_new_lot"  /> -->
+                
+                
+                
+                
+        <menuitem name="Productos" 
+            action="product.product_template_action" 
+            id="menu_product_template_action_ariis" 
+            parent="ariis.dispositivo_menu" 
+            groups="stock.group_production_lot"
+            sequence="1" />
+	</data>
+</odoo>

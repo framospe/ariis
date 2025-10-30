@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+
+	<data noupdate="0">
+ 
+		<!-- ===================== -->
+		<!-- Categoria Aplicacion -->
+		<!-- ===================== -->
+		<record model="ir.module.category" id="module_category_ariis_management">
+            		<field name="name">Ariis</field>
+            		<field name="description">Gestión de Dispositivos</field>
+			<field name="sequence">16</field>
+		</record>
+		<!-- =================================================== -->
+		<!-- Canal de notificaciones de Ariis CXC 		         -->
+		<!-- =================================================== -->
+        <record model="discuss.channel" id="channel_ariis">
+            <field name="name">Ariis Notificaciones</field>
+            <field name="group_ids" eval="[(4, ref('ariis.ariis_grupo_gestion'))]"/>
+            <field name="description">General Notificaciones desde Ariis CXC.</field>
+            <field name="channel_type">channel</field>
+        </record> 
+		<!-- ===================== -->
+		<!-- Categoria de Clientes -->
+		<!-- ===================== -->
+		<record id="ariis_cliente_tipo_01" model="res.partner.category">
+			<field name="name">Coste X Copia</field>
+		</record>
+		<record id="ariis_cliente_tipo_02" model="res.partner.category">
+			<field name="name">Servicio Tecnico</field>
+		</record>
+		<record id="ariis_cliente_tipo_03" model="res.partner.category">
+			<field name="name">Prospecto</field>
+		</record>
+		<record id="ariis_cliente_tipo_04" model="res.partner.category">
+			<field name="name">Servicio TPV</field>
+		</record>
+		<record id="ariis_cliente_tipo_05" model="res.partner.category">
+			<field name="name">Otros</field>
+		</record>
+		<record id="ariis_cliente_tipo_06" model="res.partner.category">
+			<field name="name">Judicial</field>
+		</record>
+		<record id="ariis_cliente_tipo_07" model="res.partner.category">
+			<field name="name">Mir</field>
+		</record>
+		<record id="ariis_cliente_tipo_08" model="res.partner.category">
+			<field name="name">Financiera</field>
+		</record>
+		<!-- ===================== -->
+		<!-- Titulo del Contacto -->
+		<!-- ===================== -->
+		<record id="ariis_contacto_representante" model="res.partner.title">
+			<field name="name">Representante Legal</field>
+			<field name="shortcut">Repr.</field>
+		</record> 
+	</data>
+
+	<data noupdate="1">
+		<!-- Productos de Coste x Copia -->
+		<record id="product_ariis_cx_color" model="product.product">
+			<field name="name">Coste X Copia COLOR</field>
+			<field name="standard_price">0.001</field>
+            <field name="detailed_type">consu</field>
+			<field name="purchase_ok">False</field>
+			<field name="type">service</field>
+			<field name="purchase_ok">False</field>
+			<!-- <field name="uom_po_id" ref="product_uom_unit"/> -->
+			<field name="default_code">ARIIS_CXC_COLOR</field>
+			<field name="description_sale">Coste X Copia COLOR</field>
+			<!-- <field name="description_pickingout">Coste X Copia COLOR</field> -->
+			<field name="image_1920" type="base64" file="ariis/static/src/image/ariis_cxc_color.jpg"/>
+		</record>
+		
+		<record id="product_ariis_cx_mono" model="product.product">
+			<field name="name">Coste X Copia MONO</field>
+			<field name="standard_price">0.001</field>
+            <field name="detailed_type">consu</field>
+			<field name="purchase_ok">False</field>
+			<field name="type">service</field>
+			<field name="default_code">ARIIS_CXC_MONO</field>
+			<field name="description_sale">Coste X Copia MONO</field>
+			<!-- <field name="description_pickingout">Coste X Copia MONO</field> -->
+			<field name="image_1920" type="base64" file="ariis/static/src/image/ariis_cxc_mono.jpg"/>
+		</record>
+		
+		<record id="product_ariis_cx_pro_color" model="product.product">
+			<field name="name">Coste X Copia PROMOCION COLOR</field>
+			<field name="standard_price">0.001</field>
+            <field name="detailed_type">consu</field>
+			<field name="purchase_ok">False</field>
+			<field name="default_code">ARIIS_CXC_PROMO_COLOR</field>
+			<field name="description_sale">PROMOCION COLOR</field>
+			<field name="description_pickingout">PROMOCION COLOR</field>
+			<field name="image_1920" type="base64" file="ariis/static/src/image/ariis_cxc_promo_color.jpg"/>
+		</record>
+		
+		<record id="product_ariis_cx_pro_mono" model="product.product">
+			<field name="name">Coste X Copia PROMOCION MONO</field>
+			<field name="standard_price">0.001</field>
+            <field name="detailed_type">consu</field>
+			<field name="purchase_ok">False</field>
+			<field name="default_code">ARIIS_CXC_PROMO_MONO</field>
+			<field name="description_sale">PROMOCION MONOCROMO</field>
+			<!-- <field name="description_pickingout">'PROMOCION MONO'</field> -->
+			<field name="image_1920" type="base64" file="ariis/static/src/image/ariis_cxc_promo_mono.jpg"/>
+		</record>
+		
+	</data>
+</odoo>

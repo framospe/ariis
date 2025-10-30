@@ -1,0 +1,73 @@
+<odoo>
+  <data>
+    
+    <record model="ir.actions.act_window" id="ariis.action_tipo_monitorizacion">
+      <field name="name">Tipo de Monitorizaciones</field>
+      <field name="res_model">ariis.tipomonitorizacion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+     
+	  <record model="ir.actions.act_window" id="action_estadodispositivo">
+      <field name="name">Estado de Dispositivos</field>
+      <field name="res_model">ariis.estadodispositivo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+	 
+	
+    <record model="ir.ui.view" id="tipomonitorizacion_list">
+      <field name="name">ariis.tipomonitorizacion.tree</field> 
+      <field name="model">ariis.tipomonitorizacion</field>
+      <field name="arch" type="xml">
+        <tree> 
+          <field name="name"/>
+		  <field name="icon"/>
+        </tree>
+      </field>
+    </record>
+    
+	<record model="ir.ui.view" id="estadodispositivo_list">
+      <field name="name">ariis.estadodispositivo.tree</field> 
+      <field name="model">ariis.estadodispositivo</field>
+      <field name="arch" type="xml">
+        <tree> 
+          <field name="name"/>
+		  <field name="icon"/>
+        </tree>
+      </field>
+    </record>
+    
+     <record id="view_tipomonitorizacion_form" model="ir.ui.view">
+        <field name="name">ariis.tipomonitorizacion.form</field>
+        <field name="model">ariis.tipomonitorizacion</field>
+        <field name="arch" type="xml">
+            <form string="Tipo Monitorización">
+                
+               <sheet string="Tipo">                     
+                    <group> 							
+						<field name="name" string="Nombre"/> 
+						<field name="icon" string="Icono Fa"/> 
+                    </group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+    <record id="view_estadodispositivo_form" model="ir.ui.view">
+        <field name="name">ariis.estadodispositivo.form</field>
+        <field name="model">ariis.estadodispositivo</field>
+        <field name="arch" type="xml">
+            <form string="Tipo Monitorización">                
+               <sheet string="Tipo">                     
+                    <group> 							
+						<field name="name" string="Nombre"/> 
+						<field name="icon" string="Icono Fa"/> 
+                    </group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+ 
+    	<menuitem name="Tipos de Monitorizacion" 	id="menu_1_list32" parent="ariis.configuracion_menu" action="action_tipo_monitorizacion" sequence="28"/>
+        <menuitem name="Estado del Dispositivo" 	id="menu_1_list33" parent="ariis.configuracion_menu" action="action_estadodispositivo" sequence="32"/>
+  </data>
+</odoo>
