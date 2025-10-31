@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+	<data>
+		
+		<record model="ir.actions.act_window" id="ariis_mir_product_suministros">
+		  <field name="name">Productos de Suministro</field>
+		  <field name="res_model">ariis.product.suministro</field>
+		  <field name="domain">[('tipo.isConsumible', '=', True )]</field>
+		  <field name="context">{ "search_default_groupby_modelo": 1  }</field>
+		  <field name="view_mode">tree,form</field>
+		</record>
+		
+		<record id="view_product_suministro_tree" model="ir.ui.view">
+			<field name="name">ariis.mir.product.suministro.tree</field>
+			<field name="model">ariis.product.suministro</field>
+			<field name="arch" type="xml">
+				<tree string="Productos para Suministros"  create="false" >
+					<field name="product_id"  />					
+					<field name="tipo"  />  
+					<field name="numero" />					
+					<field name="color"  />
+					<field name="product_suministro"/>
+					<field name="product_original"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="search_product_suministro_select" model="ir.ui.view">
+			<field name="name">ariis.mir.product.suministro.select</field>
+			<field name="model">ariis.product.suministro</field>		
+			<field name="arch" type="xml">
+				<search string="Buscar Producto de Suministro">				
+					<field name="product_id"/>
+					<field name="numero"/>
+					<field name="color"  />
+					<field name="product_id"  />
+					<group expand="0" string="Group By">
+						<filter string="Por Modelo" name="groupby_modelo" context="{'group_by':'product_id'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		
+		<record id="view_product_suministro_form" model="ir.ui.view">
+			<field name="name">ariis.product.suministro.form</field> 
+			<field name="model">ariis.product.suministro</field> 
+			<field name="arch" type="xml">
+				<form string="Producto Asociado a Suministro" create="false" >   
+					<group>
+						<group colspan="2"   >
+							<field name="product_id"  />
+							<field name="numero"  />
+							<field name="color"  />
+							<field name="tipo"  />
+						</group>
+						<group>
+							<field name="product_original"  />
+							<field name="product_suministro"  />
+						</group>
+					</group>
+					
+				</form>
+			</field>
+		</record>
+	
+		<menuitem name="Productos de Suministro"	id="ariis_mir.product_suministro_list" 	parent="ariis_mir.suministro_menu"	action="ariis_mir_product_suministros" sequence="3"/>
+	</data>
+</odoo>

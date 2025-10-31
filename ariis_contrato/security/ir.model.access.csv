@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"ariis_contrato_manager","Contrato Ariis Manager","model_ariis_contrato","account.group_account_manager",1,1,1,1
+"ariis_contrato_user","Contrato Ariis User","model_ariis_contrato","account.group_account_invoice",1,0,0,0
+"ariis_contrato_line_manager","Contrato Conceptos Ariis Manager","model_ariis_analytic_contract_line","account.group_account_manager",1,1,1,1
+"ariis_contrato_line_user","Contrato Conceptos Ariis User","model_ariis_analytic_contract_line","account.group_account_invoice",1,0,0,0

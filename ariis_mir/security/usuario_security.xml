@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- ==================================================================== -->
+	<!-- Parametros del Sistema -->
+	<!-- ==================================================================== -->
+    <record id="ariis_ir_config_parameter_lector" model="ir.model.access">
+        <field name="name">Ariis: Parametros Sistema - read</field>
+        <field name="model_id" ref="base.model_ir_config_parameter"/>
+        <field name="group_id" ref="ariis.ariis_grupo_usuario"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">0</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+	<!-- ==================================================================== -->
+	<!-- Lecturas -->
+	<!-- ==================================================================== -->
+    <record id="ariis_lectura_mir_read" model="ir.model.access">
+        <field name="name">Ariis: Lectura Mir - (Lector)</field>
+        <field name="model_id" ref="model_ariis_mir_lectura"/>
+        <field name="group_id" ref="ariis.ariis_grupo_usuario"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+		<!-- ==================================================================== -->
+	<!-- Tipo de Suministro -->
+	<!-- ==================================================================== -->
+    <record id="ariis_tiposuministro_grant" model="ir.model.access">
+        <field name="name">Ariis: Tipo Suministro - grant</field>
+        <field name="model_id" ref="model_ariis_tiposuministro"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+    <!-- ==================================================================== -->
+	<!-- Suministro -->
+	<!-- ==================================================================== -->
+	<record id="ariis_suministro_grant" model="ir.model.access">
+        <field name="name">Ariis: Suministro - grant</field>
+        <field name="model_id" ref="model_ariis_suministro"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+</odoo>

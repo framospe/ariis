@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+ariis_mir_lectura_autor	,"Ariis: Lectura Mir - autor"	,model_ariis_mir_lectura,ariis.ariis_grupo_responsable,1,1,1,0
+ariis_mir_lectura_lector,"Ariis: Lectura Mir - lector"	,model_ariis_mir_lectura,ariis.ariis_grupo_usuario,1,0,0,0
+

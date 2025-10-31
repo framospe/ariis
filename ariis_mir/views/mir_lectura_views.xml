@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+    <data>
+	   
+		<record model="ir.actions.act_window" id="action_mir_lectura">
+		  <field name="name">Lectura MIR</field>
+		  <field name="res_model">ariis.mir.lectura</field>
+		  <field name="context">{"search_default_lecturas_hoy":1   }</field>
+		  <field name="view_mode">tree,form,activity</field>
+		</record>
+		
+		<record id="view_mir_lectura_tree" model="ir.ui.view">
+			<field name="name">ariis.mir.lectura.tree</field>
+			<field name="model">ariis.mir.lectura</field>
+			<field name="arch" type="xml">
+				<tree string="Lecturas Mir" default_order="creado" create="false">
+					<field name="creado"/>
+					<field name="serialnumber"/>
+					<field name="modelo"/>                 
+					<field name="total_pag_mono" string="Tot. Print BN"/>
+					<field name="total_pag_color" string="Tot. Print Color"/>
+					<field name="total_pag_impresas"/>
+					<field name="origen"/>
+					<field name="estado_id"/>
+					<field name="descripcion" string="Asunto"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_mir_lectura_form" model="ir.ui.view">
+			<field name="name">ariis.mir.lectura.form</field>
+			<field name="model">ariis.mir.lectura</field> 
+			<field name="arch" type="xml">
+				
+				<form string="Lectura Mir de Dispositivo" create="false" > 
+					<field name="iscolor" invisible="1" />
+					<header>
+                    
+						<button name="prepararLecturasMail"	
+							type="object" 
+							string="Prepara Lectura" 
+                            invisible="id==False or tratada==True or origen!='02'"
+							class="oe_highlight" />
+                            
+                        <button name="runEntry"	
+							type="object" 
+							string="Trata Lectura" 
+							class="oe_highlight" 
+                            invisible="id==False or tratada==True"
+                            />
+					</header>
+					<sheet string="Lectura Mir">
+						<group>
+							<group colspan="4">
+								<field name="descripcion"/>
+							</group>
+							<group>
+								<field name="unid"/>
+								<field name="creado" readonly="1"/>
+							</group>
+							<group>
+								<field name="origen" />
+								<field name="tratada" widget="boolean_toggle" />
+							</group>
+						</group>
+						<notebook>
+							<page string="Identificadores" name="mir_lectura_identificadores">
+								<group>
+									<group>
+										<field name="cliente_id" />
+										<field name="dispositivo_id" />
+										<field name="macaddress" />
+										<field name="ipaddress" />
+										<field name="addressrequest"  invisible="origen!='01'" />
+										<field name="encendidohace"  invisible="origen!='01'" />
+										
+									</group>
+									<group>
+										<field name="modelo" />
+										<field name="serialnumber" />
+										<field name="hostname" />									
+										<field name="esquema" invisible="origen!='01'" />
+										<field name="sysObject" invisible="origen!='01'" />
+										<field name="estado"  />
+										
+									</group>
+								</group>
+							</page>
+							<page string="Referencias" name="mir_lectura_page_referencias"   >
+								<group name="mir_cliente_group_referencias">
+									<group string="Cliente" name="mir_lectura_group_referencias_cliente">
+										<field name="cliente" />
+										<field name="dispositivo" />
+									</group>
+								</group>
+                                <group name="mir_lectura_group_lecturas">
+                                    <group string="Lectura" name="mir_lectura_group_referencias_lectura" >
+										<field name="totalmes" />
+										<field name="lectura" />
+									</group>
+								</group>
+							</page>
+							
+							<page string="Totales" name="mir_lectura_totales">
+								<group>
+									<group>
+										<field name="total_pag_impresas" readonly="origen!='03'" />
+										<field name="totalpaginasdiff" readonly="1"/>
+									</group>
+									<group>
+										<field name="total_pag_mono" readonly="origen!='03'"/>
+										<field name="total_pag_color" invisible="iscolor==False" readonly="origen!='03'"/>
+									</group>
+								</group>
+							</page>
+                            <page string="Suministros" name="mir_lectura_suministros"  invisible="origen!='01'">
+								<field name="suministros_ids" >
+									<tree default_order="tipo_id" >
+										<field name="numero" />
+										<field name="tipo_id" />
+										<field name="color"  />
+										<field name="nivel" widget="progressbar"  />
+									</tree>
+								</field>
+							</page>
+							<page string="Ubicacion" name="mir_lectura_ubicacion">
+								<group>
+									<group>									
+										<field name="nombre"  />
+										<field name="contacto"  />
+										<field name="localizacion"  />									
+									</group>
+								</group>
+							</page>
+
+							<page string="Tratamiento" name="mir_lectura_tratamiento"  >
+								<group>
+									<group>									
+										<field name="estado_id" />
+										<field name="errortext" />
+										<field name="errordesc" />									
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		
+		<!-- <record model="ir.actions.act_window" id="action_mir_suministros"> -->
+		  <!-- <field name="name">Suministros MIR</field> -->
+		  <!-- <field name="res_model">ariis.mir.suministro</field> -->
+		  <!-- <field name="view_mode">tree,form</field> -->
+		<!-- </record> -->
+		
+		<!-- <record id="view_mir_suministro_tree" model="ir.ui.view"> -->
+			<!-- <field name="name">ariis.mir.suministro.tree</field> -->
+			<!-- <field name="model">ariis.mir.suministro</field> -->
+			<!-- <field name="arch" type="xml"> -->
+				<!-- <tree string="Suministros Mir"  > -->
+					<!-- <field name="tipo_id" /> -->
+					<!-- <field name="color"  /> -->
+					<!-- <field name="numero" /> -->
+					<!-- <field name="nivel" widget="progressbar"  />								 -->
+				<!-- </tree> -->
+			<!-- </field> -->
+		<!-- </record> -->
+		
+		
+		<record model="ir.ui.view" id="mir_lectura_list_filter">
+			<field name="name">ariis.mir.lectura.select</field> 
+			<field name="model">ariis.mir.lectura</field>
+			<field name="arch" type="xml">
+				<search string="Lecturas">
+					<filter string="De Hoy" name="lecturas_hoy" domain="[('creado','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('creado','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/> 
+					<separator/>
+					<filter string="Sin Tratar" name="sintratar" domain="[('tratada','=',False )]"/>
+					<separator/>
+					<filter string="Con Lectura" name="conlectura" domain="[('lectura','!=',False )]"/>
+                    <filter string="Con Errores" name="conerror" domain="[('estado_id','!=',2 )]"/>
+					<separator/>
+					<field name="cliente_id" />
+					<field name="dispositivo_id" />
+					<field name="serialnumber" />
+					<field name="esquema" />
+					<filter string="Tipo Manual" name="tipomanual" domain="[('origen','=','03' )]"/> 
+					<filter string="Tipo Mail" name="tipomail" domain="[('origen','=','02' )]"/> 
+					<group expand="0" string="Group By">
+						<filter name="por_cliente" string="Por Cliente" domain="[]" context="{'group_by':'cliente'}"/>
+						<filter name="por_estado" string="Por Estado" domain="[]" context="{'group_by':'estado_id'}"/>
+						<filter name="por_error" string="Por Error" domain="[]" context="{'group_by':'errortext'}"/>
+						<filter name="por_detalle_error" string="Por Detalle Error" domain="[]" context="{'group_by':'errordesc'}"/>
+					 </group>
+				</search>
+			</field>
+		</record>
+		
+		
+				
+		<menuitem id="ariis_mir.mir_lecturas_new"
+			name="Lecturas Recibidas"
+			parent="ariis_mir.menu_mir"
+			sequence="1" 
+			action="action_mir_lectura" />
+		
+	</data>
+</odoo>

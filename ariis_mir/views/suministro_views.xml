@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+  <data>
+
+    
+	<record model="ir.ui.view" id="ariis_mir.suministro_view">
+      <field name="name">ariis.suministro.tree</field> 
+      <field name="model">ariis.suministro</field>
+      <field name="arch" type="xml">		
+		<tree create="false">
+			<field name="last_send" widget="date"/>			
+			<field name="lot_id"/>
+			<field name="modelo"/>			
+			<field name="tipo_id" string="Tipo" />
+			<field name="color"/>
+			<field name="nivel" widget="progressbar" options="{ 'color_url': '/ariis/static/src/image/Color%s%.gif' ,'color_field_value': 'color' }"/> 
+			<!-- <field name="nivel" string="%"/> -->
+			<field name="subestado"/>
+			<field name="last_report" string="Ultima Actividad" />
+		</tree>
+      </field>
+    </record>
+	
+	<record model="ir.ui.view" id="ariis_mir.suministro_select">
+      <field name="name">ariis.mir.suministro.select</field> 
+      <field name="model">ariis.suministro</field>
+	  <!-- <field name="domain">[('partner_id.active', '=', True )]</field> -->
+      <field name="arch" type="xml">
+			<search string="Buscar Suministro">
+				<field name="lot_id"/>
+				<field name="partner_id"/>
+				<filter string="Consumibles" name="solo_consumibles" domain="[('tipo_id.isConsumible', '=', True )]"/> 	
+				<separator/>
+				<filter string="Solicitado" name="solicitado" domain="[('subestado', '=', '02' )]"/> 				 
+				<filter string="Preparando" name="preparando" domain="[('subestado', '=', '03' )]"/> 
+				<filter string="Preparado"  name="preparado" domain="[('subestado', '=', '04' )]"/> 
+				<filter string="Enviado" 	name="enviado" domain="[('subestado', '=', '05' )]"/>
+				<separator/>
+					<filter  string="Con Actividad ultimos 90 dias" name="ultimos90dias"
+						domain="[('last_report','&gt;=',(datetime.date.today()-datetime.timedelta
+								(days=90)).strftime('%%Y-%%m-%%d 00:00:00'))]" />
+					<filter  string="Con Actividad ultimos 365 dias" name="ultimos365dias"
+						domain="[('last_report','&gt;=',(datetime.date.today()-datetime.timedelta
+								(days=365)).strftime('%%Y-%%m-%%d 00:00:00'))]" />
+				<separator/>
+				<filter string="Porcentaje 10%" 	name="filert_porcentaje_10" 	domain="[('porcentaje', '=', '10' )]"/>
+				<filter string="Porcentaje 20%"  name="filert_porcentaje_20"	domain="[('porcentaje', '=', '20' )]"/>
+				<filter string="Porcentaje 30%"  name="filert_porcentaje_30"	domain="[('porcentaje', '=', '30' )]"/>
+				<filter string="Porcentaje 40%"  name="filert_porcentaje_40"	domain="[('porcentaje', '=', '40' )]"/>
+				
+				<group expand="0" string="Group By">
+					<filter string="Por Porcentaje" name="por_porcentaje" domain="[]" context="{'group_by':'porcentaje'}"/>
+					<filter string="Por Nivel" name="por_nivel" domain="[]" context="{'group_by':'nivel'}"/>
+					<separator/>
+					<filter string="Por Estado" 			name="groupby_estado" domain="[]" context="{'group_by':'state'}"/>
+					<filter string="Por Estado Solicitud" 	name="groupby_subestado" domain="[]" context="{'group_by':'subestado'}"/>
+					<filter string="Por Cliente" 			name="groupby_partner" domain="[]" context="{'group_by':'partner_id'}"/>
+					<filter string="Por Tipo de Suministro" name="groupby_tiposuministro" domain="[]" context="{'group_by':'tipo_id'}"/>
+				 </group>
+			</search>
+	  </field>
+	</record>
+
+	<record model="ir.actions.act_window" id="ariis_mir.action_suministro">
+		<field name="name">Suministros</field>
+		<field name="res_model">ariis.suministro</field>
+		<field name="context">{
+							   "search_default_solo_consumibles": 1 ,
+							   "search_default_ultimos90dias": 1 ,
+							   "search_default_groupby_subestado": 1 , 
+							   "search_default_groupby_tiposuministro" : 1
+							  }
+		</field>
+		<field name="domain">[('partner_id.is_bloqueado', '=', False ),('partner_id.active','=',True),('state','!=','03')]</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	
+	<record model="ir.actions.act_window" id="ariis_mir.action_suministros_consumidos_only">
+      <field name="name">Suministros Consumidos</field>
+      <field name="res_model">ariis.suministro</field>
+      <field name="view_mode">tree</field>
+	  <field name="domain">[ '|',('state','=','03'),('subestado','=','06')]</field>
+   </record>
+	
+	<record model="ir.actions.act_window" id="ariis_mir.action_suministros_consumidos">
+      <field name="name">Suministros Consumidos</field>
+      <field name="res_model">ariis.suministro</field>
+      <field name="view_mode">tree,form</field>
+	  <field name="domain">[ ('state','=','03'),('subestado','=','06'),('lot_id','=',context.get('lot_id')),('color','=',context.get('color')),('numero','=',context.get('numero'))]</field>
+    </record>
+	
+     <record id="view_suministro_form" model="ir.ui.view">
+		<field name="name">ariis.suministro.form</field> 
+        <field name="model">ariis.suministro</field> 
+        <field name="arch" type="xml">
+            <form string="Suministro" create="false" >   
+				<!-- <field name="is_bloqueado" visible="0" /> -->
+				<field name="lot_id" invisible="1"/>
+				<!-- <header> -->
+					<!-- <button state="01" name="action_solicita"				type="object" string="Solicitar Suministro (Agotado)"  class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','!=','01'),('is_bloqueado','=',True)]}"/> -->
+					<!-- <button state="01" name="action_solicita_defectuoso"	type="object" string="Solicitar Cambio (Defectuoso)"  class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','!=','01'),('is_bloqueado','=',True)]}"/> -->
+					<!-- <button state="01" name="action_retirar"				type="object" string="Retirar Solicitud" class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','in',('01','05','06')),('is_bloqueado','=',True)]}"/> -->
+					<!-- <button state="01" name="action_set_product"			type="object" string="Buscar Producto Asociado" class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','not in',('02','07')),'|',('is_bloqueado','=',True),('product_suministro','!=',False)]}"/> -->
+					<!-- <button state="01" name="action_notificar"				type="object" string="Preparar" class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','not in',('02','07')),'|',('is_bloqueado','=',True),('product_suministro','=',False)]}"/> -->
+					<!-- <button state="01" name="action_preparado"				type="object" string="Preparado" class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','!=','03'),('is_bloqueado','=',True)]}"  groups="ariis.ariis_grupo_gestion,ariis.ariis_grupo_taller" /> -->
+					<!-- <button state="01" name="action_enviado"				type="object" string="Enviado" class="btn-primary" attrs="{'invisible': ['|',('id','=', False ),'|',('subestado','!=','04'),('is_bloqueado','=',True)]}"  groups="ariis.ariis_grupo_gestion,ariis.ariis_grupo_taller" /> -->
+					<!-- <button name="action_retirar"				type="object" string="Instalado" class="btn-primary" attrs="{'invisible': ['|',('subestado','!=','05'),'|',('id','=', False ),'|',('state','=','03'),('is_bloqueado','=',True)]}"/> -->
+				<!-- </header> -->
+                <sheet string="Suministro">  
+					<div class="oe_button_box" name="button_box">	
+						
+						<button class="oe_stat_button" 
+								type="action" 
+								string="Consumidos"	
+								invisible="state=='03'"
+								context="{	'lot_id':lot_id ,
+											'color': color,
+											'tipo_id': tipo_id ,
+											'numero':numero }"
+								name="%(ariis_mir.action_suministros_consumidos)d" 					
+								icon="fa-bug" >
+						</button>
+						<button class="oe_stat_button" 
+								type="object" 
+								invisible="last_send==False or last_send==''"
+								string="Enviados"									
+								name="show_picking" 					
+								icon="fa-truck" />
+ 
+					</div>
+                    <group>
+						<group colspan="2"   >
+							<field name="partner_id" colspan="2" options="{'no_create': True}" domain="[('is_company','=',True)]"/>
+							<field name="is_bloqueado"  />
+							<field name="dispositivo_id" domain="[('partner_id','=',partner_id),('mir','=',True)]"/>
+							<field name="product_template" groups="ariis.ariis_grupo_desarrollador" />
+						</group>
+						<group>
+							<field name="state" string="Estado"/>
+							<field name="modelo"  string="Modelo" />                             
+							 <field name="last_report" string="Ultima Actividad"/>
+							<field name="create_date" string="Creado"/> 
+							<field name="subestado" string="Esta"/>
+							<field name="last_send"  />
+						</group>
+						<group>
+							<field name="suministro_original" />
+							<field name="numero"  />
+							<field name="tipo_id" string="Tipo" />							
+							<field name="color" />
+							<field name="porcentaje"/>
+							<field name="nivel"  />
+							<button class="oe_stat_button" 
+								type="object" 
+								invisible="product_suministro==False"
+								string="Actualizar Fecha de Ultimo Envio"									
+								name="search_last_picking" 					
+								icon="fa-truck" />
+						</group>
+					</group>
+					<group>
+						<button  name="action_set_product" class="oe_stat_button" type="object" string="Buscar Producto Asociado" />
+					</group>
+					<group>
+						<field name="product_suministro"  context="{'desde_suministro' : True ,'is_original': suministro_original }" options='{"always_reload": True}' />
+						<field name="stock_picking"  />
+					</group>
+				</sheet>
+				<div class="oe_chatter">
+                    <!-- <field name="message_follower_ids" widget="mail_followers"/>  -->
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+			</form>
+		</field>
+	</record>
+ 
+	<record id="suministro_action_server_solicita" model="ir.actions.server">
+            <field name="name">Suministro: Solicitar Nuevo (por Agotado)</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids), ('subestado','=','01')]).action_solicita()
+            </field>
+	</record>
+	<record id="suministro_action_server_solicita_defectuoso" model="ir.actions.server">
+            <field name="name">Suministro: Solicitar Nuevo (por Defectuoso)</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids), ('subestado','=','01')]).action_solicita_defectuoso()
+            </field>
+	</record>
+	<record id="suministro_action_server_retirar" model="ir.actions.server">
+            <field name="name">Suministro: Retirar Solicitud</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids), ('subestado','not in',('01','05'))]).action_retirar()
+            </field>
+	</record>
+	<record id="suministro_action_server_notificar" model="ir.actions.server">
+            <field name="name">Suministro: Notificar</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids), ('subestado','=','02')]).action_notificar()
+            </field>
+	</record>
+	<record id="suministro_action_server_preparado" model="ir.actions.server">
+            <field name="name">Suministro: Preparado</field>
+            <field name="type">ir.actions.server</field>
+			<!-- <field name="groups">ariis_grupo_taller</field> -->
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids), ('subestado','=','03')]).action_preparado()
+            </field>
+	</record>
+	<record id="suministro_action_server_enviado" model="ir.actions.server">
+            <field name="name">Suministro: Enviado</field>
+            <field name="type">ir.actions.server</field>
+			<!-- <field name="groups">ariis_grupo_taller</field> -->
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids), ('subestado','=','04')]).action_enviado()
+            </field>
+	</record>
+	<record id="suministro_action_server_instalado" model="ir.actions.server">
+            <field name="name">Suministro: Instalado</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_ariis_suministro" />
+            <field name="binding_model_id" ref="model_ariis_suministro" />
+            <field name="state">code</field>
+            <field name="code">
+				if records:
+					env['ariis.suministro'].search([('id', 'in', records.ids),('state','!=','03')]).action_retirar()
+            </field>
+	</record>
+	
+	
+	
+	<record model="ir.ui.view" id="ariis_tiposuministros_view">
+		<field name="name">Tipo de Suministros</field>
+		<field name="model">ariis.tiposuministro</field>
+		<field name="arch" type="xml">		
+			<tree create="false">
+				<field name="name" />
+				<field name="isConsumible" widget="boolean_toggle" />
+				<field name="icon" />
+			</tree>
+		</field>
+	</record>
+	
+	<menuitem name="Suministros"			id="ariis_mir.suministro_menu" 	parent="ariis.menu_ariis" sequence="3"/>
+	<menuitem name="Suministros"			id="ariis_mir.suministro_list" 	parent="ariis_mir.suministro_menu"	action="ariis_mir.action_suministro" sequence="3"/>
+	<!-- <menuitem name="Suministros Consumidos Solo"	id="ariis.action_suministros_consumidos_prueba" 	parent="ariis.dispositivo_menu"	action="ariis.action_suministros_consumidos_only" sequence="4"/> -->
+		
+  </data>
+</odoo>

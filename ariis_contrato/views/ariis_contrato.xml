@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    
+	<record id="sequence_contrato" model="ir.sequence">
+		<field name="name">Numero de Contrato</field>
+		<field name="code">ariis.contrato</field>
+		<field name="prefix">CON/%(range_year)s/</field>
+		<field eval="1" name="number_next"/>
+		<field eval="1" name="number_increment"/>
+		<field eval="True" name="use_date_range"/>
+		<field eval="False" name="company_id"/>
+		<field name="padding">4</field>
+	</record>
+		
+    <record  id="action_contrato" model="ir.actions.act_window">
+      <field name="name">Contratos</field>
+      <field name="res_model">ariis.contrato</field>
+      <field name="view_mode">tree,form,pivot,graph,activity</field>
+    </record>
+	
+	<record id="view_contrato_view" model="ir.ui.view" >
+      <field name="name">ariis.contrato.tree</field> 
+      <field name="model">ariis.contrato</field>
+      <field name="arch" type="xml">
+        <tree default_order="fecha_inicio desc , state "
+			decoration-muted="state=='0'" 
+			decoration-info="state=='4'"
+			decoration-warning="state=='3'"
+			decoration-danger="state in ('2','5')">
+			<field name="name" string="Nº Contrato"/> 
+			<field name="state" widget="badge" decoration-muted="state=='0'" decoration-success="state=='1'"  decoration-info="state=='5'" decoration-warning="state in ('3' )"  decoration-danger="state in ('2','4')"/>
+			<field name="tipo_id"  />
+			<field name="fecha_inicio"  />
+			<field name="fecha_fin"  />
+			<field name="precio" sum="Total Precio" widget="monetary" />
+			<field name="cuota" sum="Total Cuotas" widget="monetary"/>
+			<field name="comercial"/>
+			<field name="partner_id"/>
+		</tree>
+      </field>
+    </record>
+	
+	<record model="ir.ui.view" id="view_contrato_view_pivot">
+            <field name="name">ariis.contrato.pivot</field>
+            <field name="model">ariis.contrato</field>
+            <field name="arch" type="xml">
+                <pivot string="Contratos">
+                    <field name="comercial" type="row"/>
+                    <field name="cuota" type="measure"/>
+                </pivot>
+			</field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_contrato_view_graph">
+            <field name="name">ariis.contrato.graph</field>
+            <field name="model">ariis.contrato</field>
+            <field name="arch" type="xml">
+                <graph string="Sales Orders">
+                    <field name="comercial"/>
+					<field name="fecha_inicio"  />
+                    <field name="cuota" type="measure"/>
+                </graph>
+            </field>
+	</record>
+	
+	<record model="ir.actions.act_window" id="action_contrato_line">
+      <field name="name">Dispositivos de Contrato</field>
+      <field name="res_model">ariis.contrato_line</field>
+      <field name="view_mode">tree,form,activity</field>
+    </record>
+
+	
+	<record id="view_contrato_form" model="ir.ui.view">
+		<field name="name">ariis.contrato.form</field> 
+        <field name="model">ariis.contrato</field> 
+        <field name="arch" type="xml">
+            <form string="Contrato">   
+				<header >
+					<button	invisible="state=='0'"    
+							name="borrador"
+							groups="ariis.ariis_grupo_gestion" 
+							type="object" 
+							string="Volver a Borrador" 
+							class="oe_highlight" />
+							
+				 <button	
+                            invisible="state!='0' or tipo_id==False or comercial==False or fecha_inicio==False or fecha_fin==False" 
+							name="activar"
+							groups="ariis.ariis_grupo_gestion" 
+							type="object" 
+							string="Activar Contrato" 
+							class="oe_highlight" />
+							
+					<button	invisible="state!='1'"       
+							name="terminar"
+							groups="ariis.ariis_grupo_gestion" 
+							type="object" 
+							string="Terminar Contrato" 
+							class="oe_highlight" />
+							
+					<button	invisible="state!='1'"
+							name="cancelar"
+							groups="ariis.ariis_grupo_gestion" 
+							type="object" 
+							string="Cancelar Contrato" 
+							class="oe_highlight" />
+							
+					<button	invisible="state!='1'"  
+							name="refreshDispositivos"
+							groups="ariis.ariis_grupo_gestion" 
+							type="object" 
+							string="Actualizar Dispositivos" 
+							class="oe_highlight" />
+					
+					<button	invisible="state!='2'"    
+							name="pteLiquidar"
+							groups="ariis.ariis_grupo_gestion" 
+							type="object" 
+							string="Poner Pte. de Liquidar" 
+							class="oe_highlight" />
+							
+					<!-- <button	 invisible="state!='3'"    -->
+							<!-- name="liquidado" -->
+							<!-- groups="ariis.ariis_grupo_gestion"  -->
+							<!-- type="object"  -->
+							<!-- string="Poner como Liquidado"  -->
+							<!-- class="oe_highlight" /> -->
+
+
+					<!-- <button name="recurring_create_invoice" -->
+                            <!-- type="object" -->
+                            <!-- attrs="{'invisible': ['|', ('state', '!=', '1'), ('partner_id', '=', False)]}" -->
+                            <!-- string="Refrescar Facturas" -->
+                            <!-- class="btn btn-secondary" -->
+                            <!-- groups="base.group_no_one" -->
+                            <!-- /> -->
+                     <field name="state" widget="statusbar" statusbar_visible="1,2,3,4,5"/>
+               </header>			
+                <sheet string="Contrato"> 
+					<div class="oe_title">
+						<label for="name" class="oe_edit_only"/>
+						<h1>
+							<field name="name" class="oe_inline" placeholder="e.g. Contrato XYZ"/>
+						</h1>
+					</div>
+					<div class="oe_button_box" name="button_box">
+                        <button name="button_show_recurring_totmes"
+                            type="object"
+                            string="Total Mes"
+							icon="fa-calendar"
+							class="oe_stat_button" >
+                            <field name="totalmes_ids_count"  widget="statinfo"/>
+                            </button>
+						<button class="oe_stat_button" type="action" 
+								name="%(ariis_contrato.action_contrato_line)d" 	
+								invisible="id==False" 					
+								context="{ 
+											'search_default_cliente' : partner_id ,
+											'search_default_contrato_id' : id ,
+											'default_contrato_id' : id , 											
+											'default_cliente' : partner_id ,
+										}"
+								icon="fa-smile-o"  >
+								<field name="line_count" string="Equipos de Contrato" widget="statinfo"/>
+						</button>
+                        <button name="button_show_recurring_invoices"
+                            type="object"
+                            string="Facturas"
+							icon="fa-calculator"
+                            invisible="facturas_ids_count==0"
+							class="oe_stat_button">
+                            <field name="facturas_ids_count"  widget="statinfo"/>
+                        </button>
+					</div>
+					<group>            
+						<group >    
+							 
+							<field name="company_id" string="Compañia" invisible="1"/>
+							<field name="partner_id" options="{'no_quick_create': True, 'no_create_edit' : True}" domain="[('is_company','=',True)]"/>
+                            <field name="tipo_id"/>
+							<field name="journal_id"/>
+							<field name="pricelist_id"/>
+							<field name="albaran"/>
+						</group>
+						<group> 
+							<!-- <field name="state"/>  -->
+							<field name="fecha"/>
+							<field name="fecha_inicio"/>
+							<field name="fecha_fin"/>
+                            <field name="comercial" options="{'no_quick_create': True, 'no_create_edit': True}" />
+ 							<field name="reload" widget="boolean_toggle"/>
+						</group>
+					</group> 
+					
+					<notebook>
+                        <page string="Impresoras a facturar" name="dispositivos_del_contrato">
+                            <field name="line_ids" context="{'default_contrato_id': id}" options="{'no_create': True}" nolabel="1">
+                                <tree
+                                    decoration-danger="last_report==False"
+                                >
+                                    <!-- <field name="dispositivo_id"/>	 -->
+                                    <field name="modelo"/>
+                                    <field name="numeroserie"/>
+                                    <field name="last_report" string="Ult. Actividad"/>
+                                    <field name="anyadido" string="Añadido a Contrato"/> 
+                                    <field name="automatic_price" optional="hide"/>
+                                    <field name="fecha_fin_pro_bn" optional="hide" string="Fin Promo. B/N"/>
+                                    <field name="fecha_fin_pro_color" optional="hide" string="Fin Promo. Color"/>
+                                    <field name="pag_pro_bn" optional="hide" string="Tot. Pag. B/N"/>
+                                    <field name="pag_pro_color" optional="hide" string="Tot. Pag. Color"/>/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Conceptos a facturar" name="conceptos_de_factura">
+                            <field name="recurring_invoice_line_ids" nolabel="1">
+                                    <tree string="Account Analytic Lines" editable="bottom" limit="20">
+                                        <field name="sequence" widget="handle" />
+                                        <field name="product_id" />
+                                        <field name="name" />
+                                        <field name="quantity" />
+                                        <field name="uom_id" />
+                                        <field name="automatic_price" />
+                                        <field name="price_unit"  readonly="automatic_price==True"/>
+                                        <field name="specific_price" invisible="1"/>
+                                        <field name="discount" groups="base.group_no_one" />
+                                        <field name="price_subtotal" />
+                                    </tree>
+                            </field>
+                            <group name="group_legend" string="Legend (for the markers inside invoice lines description)" colspan="3">
+                                <group string="#START#"><div><p>Start date of the invoiced period</p></div> </group>
+                                <group string="#END#"> <p>End date of the invoiced period</p></group>
+                                <group string="#MONTH#"><p>Month invoiced period</p></group>
+                            </group>
+                        </page>
+                        <page string="Financiación" name="financiacion">
+                            <group>
+                                <group>    
+                                    <field name="financiera_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                                    <field name="precio"/>
+                                </group>
+                                 <group>    
+                                    <field name="cuota"/>									
+                                    <field name="plazos" string="Nº de Plazos"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+					<field name="activity_ids" widget="mail_activity"/>
+					<field name="message_ids" widget="mail_thread"/>
+				</div>
+			</form>
+		</field>
+	</record>
+	
+	<record model="ir.ui.view" id="contrato_list_filter">
+      <field name="name">ariis.contrato.select</field> 
+      <field name="model">ariis.contrato</field>
+	  <!-- <field name="context">{"search_default_mis_contratos":1}</field> -->
+      <field name="arch" type="xml">
+        <search string="Buscar Contratos">
+			<field name="partner_id"/>
+			<field name="financiera_id"/>
+			<field name="name" string="Contrato"/> 
+			<field name="comercial" />
+			<separator/>
+			<field name="fecha"  string="Creado"/>
+			<field name="fecha_fin"  />  
+			<separator/>
+				<filter string="Mis Contratos" name="mis_contratos" domain="[('comercial.user_id','=',uid)]"/>
+				<filter string="Iniciados este Mes" name="mis_contratos" domain="[('state','=','1' ),( 'fecha_inicio', '&gt;=', context_today().strftime('%Y-%m-01')),( 'fecha_inicio', '&lt;', (context_today()+relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+			<separator/>
+			<filter name="caduca_hoy" string="Caducan Hoy" domain="[('fecha_fin','=',((context_today()).strftime('%Y-%m-%d')))]"/> 
+			<filter name="caduca_este_mes" string="Caducan este Mes" domain="[('state','=','1' ),( 'fecha_fin','&gt;=',((context_today()).strftime('%Y-%m-01'))),
+												( 'fecha_fin','&lt;',((context_today()+relativedelta(months=1)).strftime('%Y-%m-01')))]"/> 
+			 <filter name="caduca_este_anyo" string="Caducan este Año" domain="[('state','=','1' ),( 'fecha_fin', '&gt;=', context_today().strftime('%Y-01-01')),
+												( 'fecha_fin','&lt;',((context_today()+relativedelta(years=1)).strftime('%Y-01-01')))]" />
+			<separator/>	
+			<filter name="caducados" string="Caducados" domain="[('fecha_fin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/> 
+			<!-- <separator/> -->
+				<filter string="Creados" name="creados" domain="[('state','=','0')]" /> 
+				<filter string="Activos" name="activos" domain="[('state','=','1' )]"/> 
+				<filter string="Terminados" name="terminados" domain="[('state','=','2' )]"/> 
+				<filter string="Pte. Liquidacion" name="pte_liquidados" domain="[('state','=','3' )]"/>
+				<filter string="Liquidados" name="liquidados" domain="[('state','=','4' )]"/>
+				<filter string="Cancelados" name="cancelados" domain="[('state','=','5' )]"/>
+			<group expand="0" string="Group By">
+				<filter name="fecha_inicio" string="Fecha Inicio Contrato" domain="[]" context="{'group_by':'fecha_inicio'}" />
+				<filter name="fecha_fin" string="Fecha Fin Contrato" domain="[]" context="{'group_by':'fecha_fin'}" />				
+				
+				<separator/>	
+				<filter name="por_cliente" string="Por Cliente" context="{'group_by':'partner_id'}"/>
+				<filter name="por_financiera" string="Por Financiera" context="{'group_by':'financiera_id'}"/>
+				<filter name="por_comercial" string="Por Comercial" context="{'group_by':'comercial'}"/>
+				<filter name="por_estado" string="Por Estado" context="{'group_by':'state'}"/>
+			</group>
+		</search>
+      </field>
+    </record>
+	
+	<record model="ir.ui.view" id="ariis_tiposuministros_view">
+		<field name="name">Tipo de Contratos</field>
+		<field name="model">ariis.contrato.tipo</field>
+		<field name="arch" type="xml">		
+			<tree>
+				<field name="name" />
+				<field name="codigo" />
+				<field name="anual" />
+				<field name="informe" />
+			</tree>
+		</field>
+	</record>
+	
+	<record model="ir.actions.act_window" id="action_contrato_tipo">
+	  <field name="name">Tipos de Contrato</field>
+	  <field name="res_model">ariis.contrato.tipo</field>
+	  <field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem name="Contratos"		id="contrato_menu" 	parent="ariis.menu_ariis" sequence="3"/>
+	<menuitem name="Contratos"		id="contrato_list"	parent="ariis_contrato.contrato_menu"	action="ariis_contrato.action_contrato" sequence="2"/>
+ 
+	<menuitem name="Tipos de Contratos" id="menu_contrato_tipo" parent="ariis.configuracion_menu" action="ariis_contrato.action_contrato_tipo" sequence="28"/>
+	
+  </data>
+</odoo>
+

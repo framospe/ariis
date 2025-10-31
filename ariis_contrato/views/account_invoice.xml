@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_move_filter_contract" model="ir.ui.view">
+        <field name="name">account.move.select.contract</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="ariis_contrato_id"/>
+            </field>
+        </field>
+    </record>
+ 
+
+    <record id="act_recurring_invoices" model="ir.actions.act_window">
+        <field name="name">Facturas de Contrato</field>
+        <field name="res_model">account.move</field>
+        <field name="view_ids"
+               eval="[(5, 0, 0),
+                      (0, 0, {'view_mode': 'tree', 'view_id': ref('account.view_invoice_tree')}),
+                      (0, 0, {'view_mode': 'form', 'view_id': ref('account.view_move_form')})]"/>
+        <field name="context">{
+            'search_default_ariis_contrato_id': [active_id],
+            'default_ariis_contrato_id': active_id}
+        </field>
+        <field name="domain">[('move_type','in', ['out_invoice', 'out_refund'])]</field>
+    </record>
+</odoo>

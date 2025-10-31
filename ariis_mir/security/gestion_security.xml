@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Lecturas MIR gerente -->
+    <record id="ariis_lecturas_mir_grant" model="ir.model.access">
+        <field name="name">Ariis: Lectura Mir - grant</field>
+        <field name="model_id" ref="model_ariis_mir_lectura"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+	<!-- Lecturas gerente -->
+    <record id="ariis_lecturas_grant" model="ir.model.access">
+        <field name="name">Ariis: Lectura - grant</field>
+        <field name="model_id" ref="model_ariis_lectura"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+    <!-- ==================================================================== -->
+	<!-- Total Mes Creador -->
+    <!-- ==================================================================== -->
+    <record id="ariis_motivosat_creador" model="ir.model.access">
+        <field name="name">Ariis: Total Mes - creador</field>
+        <field name="model_id" ref="model_ariis_total_mes"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+    <!-- ==================================================================== -->
+	<!-- MenuMap gerente -->
+    <!-- ==================================================================== -->
+    <!-- <record id="ariis_menumap_grant" model="ir.model.access"> -->
+        <!-- <field name="name">Ariis: MenuMap - grant</field> -->
+        <!-- <field name="model_id" ref="model_ariis_menumap"/> -->
+        <!-- <field name="group_id" ref="ariis.ariis_grupo_gestion"/> -->
+		<!-- <field name="perm_read">1</field> -->
+		<!-- <field name="perm_write">1</field> -->
+		<!-- <field name="perm_create">1</field> -->
+		<!-- <field name="perm_unlink">1</field> -->
+    <!-- </record> -->
+    <!-- ==================================================================== -->
+	<!-- Suministro Mir manage -->
+    <!-- ==================================================================== -->
+    <record id="ariis_ariis_mir_suministro_grant" model="ir.model.access">
+        <field name="name">Ariis: Suministro Mir - grant</field>
+        <field name="model_id" ref="model_ariis_mir_suministro"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+    <!-- ==================================================================== -->
+	<!-- Product Suministro - editor -->
+    <!-- ==================================================================== -->
+    <record id="ariis_product_suministro_edit" model="ir.model.access">
+        <field name="name">Ariis: Product Suministro - editor</field>
+        <field name="model_id" ref="model_ariis_product_suministro"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+    <!-- ====================== -->
+	<!-- Tipo Suministro editor -->
+    <!-- ====================== -->
+    <record id="ariis_tiposuministro_edit" model="ir.model.access">
+        <field name="name">Ariis: Tipo Suministro - editor</field>
+        <field name="model_id" ref="ariis_mir.model_ariis_tiposuministro"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+    <!-- ====================== -->
+	<!-- Suministro - editor -->
+    <!-- ====================== -->
+    <record id="ariis_suministro_grant" model="ir.model.access">
+        <field name="name">Ariis: Suministro - grant</field>
+        <field name="model_id" ref="model_ariis_suministro"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+    <!-- ====================== -->
+	<!-- Menumap - editor -->
+    <!-- ==================================================================== -->
+    <!-- <record id="ariis_menumap_edit" model="ir.model.access"> -->
+        <!-- <field name="name">Ariis: MenuMap - edit</field> -->
+        <!-- <field name="model_id" ref="model_ariis_menumap"/> -->
+        <!-- <field name="group_id" ref="ariis.ariis_grupo_gestion"/> -->
+		<!-- <field name="perm_read">1</field> -->
+		<!-- <field name="perm_write">1</field> -->
+		<!-- <field name="perm_create">0</field> -->
+		<!-- <field name="perm_unlink">0</field> -->
+    <!-- </record> -->
+	<!-- ==================================================================== -->
+	<!-- <record id="ariis_product_suministro_grant" model="ir.model.access"> -->
+        <!-- <field name="name">Ariis: Producto de Suministro - grant</field> -->
+        <!-- <field name="model_id" ref="model_ariis_product_suministro"/> -->
+        <!-- <field name="group_id" ref="ariis.ariis_grupo_gestion"/> -->
+		<!-- <field name="perm_read">1</field> -->
+		<!-- <field name="perm_write">1</field> -->
+		<!-- <field name="perm_create">1</field> -->
+		<!-- <field name="perm_unlink">1</field> -->
+    <!-- </record> -->
+	<!-- ==================================================================== -->
+	<record id="ariis_res_partner_bank_grant" model="ir.model.access">
+        <field name="name">Ariis:Cuenta Bancaria - grant</field>
+        <field name="model_id" ref="account.model_res_partner_bank"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+    <!-- ==================================================================== -->
+</odoo>

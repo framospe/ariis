@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    
+     <record id="contract_contract_tree_view" model="ir.ui.view">
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_tree_view" />
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="iscxc"  string="Es Contrat CXC" optional="hide"/>
+                <field name="date_start"   optional="hide"/>
+                <field name="date_end"   optional="hide"/>
+                <field name="recurring_next_date"   optional="hide"/>
+                <field name="generation_type"   optional="hide"/>
+                <field name="recurring_rule_type"   optional="hide"/>
+                
+            </xpath>
+        </field>
+    </record>
+    <record id="contract_contract_ariis_search_view" model="ir.ui.view">
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_search_view" />
+        <field name="arch" type="xml"> 
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <!-- <field name="iscxc"  string="Solo Contratos CXC"/> -->
+                <separator/> 
+                <filter name="solo_cxc" string="Solo Contratos CXC"  domain="[('iscxc','=',True)]"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="contract_contract_form_view" model="ir.ui.view">
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml"> 
+            <!-- <xpath expr="//button[@name='action_preview']" position="after"> -->
+                <!-- <button type="object" string="Previsualizar Factura" name="action_preview" /> -->
+                <!-- <button type="object" string="Test Fecha" name="action_testfecha" /> -->
+            <!-- </xpath> -->
+            <!-- <xpath expr="//button[@name='action_preview']" position="attributes"> -->
+                <!-- <attribute name="invisible">True</attribute> -->
+            <!-- </xpath> -->
+            <xpath expr="//field[@name='contract_template_id']" position="before">
+                <field name="iscxc" widget="boolean_toggle" string="Contrato CXC"/>
+            </xpath>
+            <xpath expr="//page[@name='recurring_invoice_line']" position="replace">
+                <page name="recurring_invoice_line_ariis" string="Facturar Paginas Impresas" invisible="not iscxc">
+                    <field  name="contract_line_ariis_cxc_ids"   
+                            options="{'no_create': True}" 
+                            nolabel="1" 
+                            context="{'default_contract_type': contract_type , 'iscxc': True}">
+                        <tree 
+                            decoration-muted="is_canceled"
+                            decoration-info="create_invoice_visibility and not is_canceled"
+                            decoration-danger="last_report==False" >
+                            <field name="promocion" column_invisible="True"/>
+                            <field name="iscolor" column_invisible="True"/>                          
+                            <field name="sequence" widget="handle"/>
+                            <field name="modelo"/>
+                            <field name="numeroserie"/>
+                            <field name="last_report" string="Ult. Actividad"/>
+                            <field name="anyadido" string="Añadido a Contrato" optional="hide"/> 
+                            <field name="automatic_price" optional="hide"/>
+                            <field name="discount" groups="product.group_discount_per_so_line" optional="hide" />
+                            <field name="iscolor" string="Color" optional="hide"/> 
+                            <!-- No Va -->
+                            <!-- <field name="fecha_fin_pro_bn" optional="hide" string="Fin Promo. B/N" /> -->
+                            <!-- <field name="fecha_fin_pro_color" optional="hide" string="Fin Promo. Color" /> -->
+                            <!-- <field name="pag_pro_bn" optional="hide" string="Tot. Pag. B/N" /> -->
+                            <!-- <field name="pag_pro_color" optional="hide" string="Tot. Pag. Color" /> -->
+                            <!-- Fin de No Va -->
+                            <field name="is_canceled" column_invisible="True" />
+                            <field
+                                name="create_invoice_visibility"
+                                column_invisible="True"
+                            />
+                            <field name="last_date_invoiced" groups="base.group_no_one" optional="hide"/> 
+                            <field
+                                name="recurring_rule_type"
+                                column_invisible="True"
+                            />
+                            <field
+                                name="recurring_invoicing_type"
+                                column_invisible="True"
+                            />
+                            <field name="date_start" required="1" />
+                            <field name="date_end" />
+                            <field name="recurring_next_date" required="1" />
+                            <field
+                                name="last_date_invoiced"
+                                groups="base.group_no_one"
+                            />
+                          
+                            <!-- <field -->
+                                <!-- name="is_plan_successor_allowed" -->
+                                <!-- column_invisible="True" -->
+                            <!-- /> -->
+                            <!-- <field -->
+                                <!-- name="is_stop_plan_successor_allowed" -->
+                                <!-- column_invisible="True" -->
+                            <!-- /> -->
+                            <!-- <field -->
+                                <!-- name="is_stop_allowed" -->
+                                <!-- column_invisible="True" -->
+                            <!-- /> -->
+                            <!-- <field -->
+                                <!-- name="is_cancel_allowed" -->
+                                <!-- column_invisible="True" -->
+                            <!-- /> -->
+                            <!-- <field -->
+                                <!-- name="is_un_cancel_allowed" -->
+                                <!-- column_invisible="True" -->
+                            <!-- /> -->
+                            <!-- <field -->
+                                <!-- name="is_auto_renew" -->
+                                <!-- column_invisible="True" -->
+                            <!-- /> -->
+                            
+                            <!-- <button -->
+                                <!-- name="action_plan_successor" -->
+                                <!-- string="Plan Start" -->
+                                <!-- type="object" -->
+                                <!-- icon="fa-calendar text-success" -->
+                                <!-- invisible="not is_plan_successor_allowed" -->
+                            <!-- /> -->
+                            <!-- <button -->
+                                <!-- name="action_stop_plan_successor" -->
+                                <!-- string="Stop Plan Successor" -->
+                                <!-- type="object" -->
+                                <!-- icon="fa-pause text-muted" -->
+                                <!-- invisible="not is_stop_plan_successor_allowed" -->
+                            <!-- /> -->
+                            <!-- <button -->
+                                <!-- name="action_stop" -->
+                                <!-- string="Stop" -->
+                                <!-- type="object" -->
+                                <!-- icon="fa-stop text-danger" -->
+                                <!-- invisible="not is_stop_allowed" -->
+                            <!-- /> -->
+                            <!-- <button -->
+                                <!-- name="cancel" -->
+                                <!-- string="Cancel" -->
+                                <!-- type="object" -->
+                                <!-- icon="fa-ban text-danger" -->
+                                <!-- confirm="Are you sure you want to cancel this line" -->
+                                <!-- invisible="not is_cancel_allowed" -->
+                            <!-- /> -->
+                            <!-- <button -->
+                                <!-- name="action_uncancel" -->
+                                <!-- string="Un-cancel" -->
+                                <!-- type="object" -->
+                                <!-- icon="fa-ban text-success" -->
+                                <!-- invisible="not is_un_cancel_allowed" -->
+                            <!-- /> -->
+                            <!-- <button -->
+                                <!-- name="renew" -->
+                                <!-- string="Renew" -->
+                                <!-- type="object" -->
+                                <!-- icon="fa-fast-forward text-success" -->
+                                <!-- groups="base.group_no_one" -->
+                                <!-- invisible="not is_auto_renew" -->
+                            <!-- /> -->
+                        </tree>
+                    </field>
+                </page> 
+                <page name="recurring_invoice_line" string="Facturar Recurrente">
+                    <field
+                                name="contract_line_ariis_ids"
+                                readonly="is_terminated"
+                                invisible="line_recurrence"
+                                widget="section_and_note_one2many"
+                                context="{'default_contract_type': contract_type, 'default_recurring_rule_type': recurring_rule_type, 'default_recurring_invoicing_type': recurring_invoicing_type, 'default_recurring_interval': recurring_interval, 'default_date_start': date_start, 'default_recurring_next_date': recurring_next_date}"
+                            >
+                        <tree
+                                    decoration-muted="is_canceled"
+                                    decoration-info="create_invoice_visibility and not is_canceled"
+                                    editable="bottom"
+                                >
+                                    <control>
+                                        <create string="Add a line" />
+                                        <create
+                                            string="Add a section"
+                                            context="{'default_display_type': 'line_section'}"
+                                        />
+                                        <create
+                                            string="Add a note"
+                                            context="{'default_display_type': 'line_note'}"
+                                        />
+                                    </control>
+                                    <field name="currency_id" column_invisible="True" />
+                                    <field
+                                        name="display_type"
+                                        column_invisible="True"
+                                    />
+                                    <field name="sequence" widget="handle" />
+                                    <field name="iscxc" />
+                                    <field name="product_id" />
+                                    <field
+                                        name="product_uom_category_id"
+                                        column_invisible="True"
+                                    />
+                                    <field name="name" widget="section_and_note_text" />
+                                    <field
+                                        name="analytic_distribution"
+                                        widget="analytic_distribution"
+                                        groups="analytic.group_analytic_accounting"
+                                    />
+                                    <field name="quantity" />
+                                    <field name="uom_id" />
+                                    <field
+                                        name="automatic_price"
+                                        column_invisible="parent.contract_type == 'purchase'"
+                                    />
+                                    <field
+                                        name="price_unit"
+                                        readonly="automatic_price"
+                                    />
+                                    <field
+                                        name="specific_price"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="discount"
+                                        groups="product.group_discount_per_so_line"
+                                    />
+                                    <field name="price_subtotal" />
+                                    <field
+                                        name="recurring_interval"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="recurring_rule_type"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="recurring_invoicing_type"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="recurring_next_date"
+                                        column_invisible="True"
+                                    />
+                                    <field name="date_start" column_invisible="True" />
+                                    <field name="date_end" />
+                                    <field
+                                        name="last_date_invoiced"
+                                        groups="base.group_no_one"
+                                    />
+                                    <field
+                                        name="create_invoice_visibility"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="is_plan_successor_allowed"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="is_stop_allowed"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="is_cancel_allowed"
+                                        column_invisible="True"
+                                    />
+                                    <field
+                                        name="is_un_cancel_allowed"
+                                        column_invisible="True"
+                                    />
+                                    <field name="is_canceled" column_invisible="True" />
+                                    
+                                </tree>
+                            </field>
+                </page>
+            </xpath> 
+            <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='recurring_invoicing_type']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='recurring_interval']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+
+            
+            <xpath expr="//group[@name='recurring_invoices']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//group[@name='recurring_type']" position="attributes">
+                <attribute name="invisible">iscxc==True</attribute>
+            </xpath>
+            <xpath expr="//page[last()]" position="after">
+                <page name="recurring_invoice_facturacion" string="Facturación" invisible="not iscxc"> 
+                    <group name="main_2">
+                        <group>
+                            <field name="pricelist_id" readonly="is_terminated" />
+                            <field name="payment_term_id" readonly="is_terminated" />
+                            <field name="user_id" readonly="is_terminated" />
+                        </group>
+                        <group>
+                            <!-- <field -->
+                                <!-- name="contract_template_id" -->
+                                <!-- readonly="is_terminated" -->
+                                <!-- domain="['|', ('contract_type', '=', contract_type), ('contract_type', '=', False)]" -->
+                                <!-- context="{'default_contract_type': contract_type}" -->
+                            <!-- /> -->
+                            <field name="contract_type" invisible="1" required="1" />
+                            <field name="fiscal_position_id" readonly="is_terminated" />
+                            <field
+                                name="journal_id"
+                                required="1"
+                                readonly="is_terminated"
+                            />
+                            <field
+                                name="tag_ids"
+                                widget="many2many_tags"
+                                options="{'color_field': 'color'}"
+                            />
+                        </group>
+                    </group>
+                    <group name="recurring_invoices">
+                        <group>
+                            <field
+                                name="line_recurrence"
+                                class="oe_inline"
+                                readonly="line_recurrence and invoice_count != 0"
+                            />
+                        </group>
+                        <group invisible="line_recurrence">
+                            <label for="recurring_interval" />
+                            <div class="o_row">
+                                <field
+                                    name="recurring_interval"
+                                    required="not line_recurrence"
+                                    class="oe_inline"
+                                    nolabel="1"
+                                />
+                                <field
+                                    name="recurring_rule_type"
+                                    required="not line_recurrence"
+                                    class="oe_inline"
+                                    nolabel="1"
+                                />
+                            </div>
+                            <field
+                                name="recurring_invoicing_type"
+                                required="not line_recurrence"
+                            />
+                        </group>
+                        <group invisible="line_recurrence">
+                            <field name="date_start" required="not line_recurrence" />
+                            <field name="date_end" />
+                            <field name="recurring_next_date" />
+                        </group>
+                    </group>
+                    <group col="4" name="recurring_type" string="Recurring Type"  >
+                        <field name="generation_type" />
+                    </group>
+                    
+                    <group name="recurring_invoices">
+                    
+                        <group>
+                            <field
+                                name="line_recurrence"
+                                class="oe_inline"
+                                readonly="line_recurrence and invoice_count != 0"
+                            />
+                        </group>
+                        <group invisible="line_recurrence">
+                            <label for="recurring_interval" />
+                            <div class="o_row">
+                                <field
+                                    name="recurring_interval"
+                                    required="not line_recurrence"
+                                    class="oe_inline"
+                                    nolabel="1"
+                                />
+                                <field
+                                    name="recurring_rule_type"
+                                    required="not line_recurrence"
+                                    class="oe_inline"
+                                    nolabel="1"
+                                />
+                            </div>
+                            <field
+                                name="recurring_invoicing_type"
+                                required="not line_recurrence"
+                            />
+                        </group>
+                        <group invisible="line_recurrence">
+                            <field name="date_start" required="not line_recurrence" />
+                            <field name="date_end" />
+                            <field name="recurring_next_date" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+ 
+    <record id="action_contratos_cxc" model="ir.actions.act_window">
+        <field name="name">Contratos CXC</field>
+        <field name="res_model">contract.contract</field>
+        <field name="view_mode">tree,form,activity</field>
+        <field name="context">{
+            'search_default_solo_cxc': True,
+            }
+        </field>
+    </record>
+ 
+
+    <menuitem
+        id="menu_contract_contract_supplier"
+        parent="ariis.cliente_menu"
+        action="action_contratos_cxc"
+        sequence="2"
+    />
+</odoo>

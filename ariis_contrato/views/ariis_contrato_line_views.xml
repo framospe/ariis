@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+  <data>
+ 
+	<record model="ir.ui.view" id="view_contrato_line_view">
+      <field name="name">ariis.contrato.linea.tree</field> 
+      <field name="model">ariis.contrato_line</field>
+      <field name="arch" type="xml">
+        <tree string="Contratos">
+			<field name="cliente" />
+			<field name="contrato_id" />
+			<field name="dispositivo_id" />
+			<field name="anyadido"  /> 
+        </tree>
+      </field>
+    </record>
+	
+	<record id="view_contrato_line_form" model="ir.ui.view">
+		<field name="name">ariis.contrato.linea.form</field> 
+        <field name="model">ariis.contrato_line</field> 
+        <field name="arch" type="xml">
+            <form string="Equipo de Contratado">   
+                <sheet string="Contrato">                     
+                    <group>
+                        <group string="Equipo">
+                            <field name="cliente"  />
+                            <field name="contrato_id"    /> 
+                            <field name="dispositivo_id"  domain="[('partner_id','=',cliente)]" />
+                            <field name="anyadido"/>
+                            <field name="iscxc" invisible="1" />
+                            <field name="iscolor" invisible="1" />
+                        </group>
+                        <group string="Precio/Promoción">
+                            <field name="automatic_price"  widget="boolean_toggle"/>
+                            <field name="precio_bn" invisible="automatic_price==True"/>
+                            <field name="precio_color" invisible="iscolor==False or automatic_price==True"/>
+                            <field name="promocion" string="Tipo Promoción"/>
+                        </group>
+					</group>
+                    <!-- <group> -->
+                        <!-- <group string="Promocion" > -->
+                            
+                        <!-- </group>   -->
+                    <!-- </group>                         -->
+                    <group string="Promoción" invisible="promocion==False">   
+                            <group string="Fechas">
+                                <field name="fecha_fin_pro_bn" />
+                                <field name="fecha_fin_pro_color" invisible="iscolor==False"/>
+                            </group>
+                            <group string="Cantidad">
+                                <field name="pag_pro_bn" />
+                                <field name="pag_pro_color" invisible="iscolor==False"/>
+                            </group>								
+                    </group>
+                    <!-- </group> -->
+					<!-- <notebook  invisible="iscxc==False"> -->
+						 
+						<!-- <page string="Promociones" name="general_promociones"  > -->
+							
+						<!-- </page> -->
+					<!-- </notebook>  -->
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			</form>
+		</field>
+	</record>
+	<record id="view_contrato_line_list_filter" model="ir.ui.view">
+        <field name="name">ariis.contrato_line.select</field>
+        <field name="model">ariis.contrato_line</field>		
+        <field name="arch" type="xml">
+			<search string="Buscar Equipo de Contrato">				
+				<field name="contrato_id" />
+				<field name="cliente" />
+				<field name="dispositivo_id"  /> 
+			</search>
+		</field>
+	</record>
+  </data>
+  
+	<record model="ir.actions.act_window" id="action_contrato_line">
+		<field name="name">Equipos de Contrato</field>
+		<field name="res_model">ariis.contrato_line</field>
+		<field name="view_mode">tree,form,activity</field>
+	</record>
+	
+  <menuitem name="Dispositivos de Contrato"		id="contrato_line_menu"	parent="ariis_contrato.contrato_menu"	action="ariis_contrato.action_contrato_line" sequence="3"/>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+	<data noupdate="1">
+		<!-- ======================= -->
+		<!-- Tipos de Suministros    -->
+		<!-- ======================= -->
+		<record id="ariis_tiposuministro_1" model="ariis.tiposuministro">
+			<field name="name">Roller</field>
+		</record>
+		<record id="ariis_tiposuministro_10" model="ariis.tiposuministro">
+			<field name="name">Developer Cartridge</field>
+		</record>
+		<record id="ariis_tiposuministro_15" model="ariis.tiposuministro">
+			<field name="name">Fuser</field>
+		</record>
+		<record id="ariis_tiposuministro_18" model="ariis.tiposuministro">
+			<field name="name">Cleaner Unit</field>
+		</record>
+		<record id="ariis_tiposuministro_20" model="ariis.tiposuministro">
+			<field name="name">Belt Unit</field>
+		</record>
+		<record id="ariis_tiposuministro_21" model="ariis.tiposuministro">
+			<field name="name">Toner Cartridge</field>
+		</record>
+		<record id="ariis_tiposuministro_24" model="ariis.tiposuministro">
+			<field name="name">Aguas Residuales</field>
+		</record>
+		<record id="ariis_tiposuministro_25" model="ariis.tiposuministro">
+			<field name="name">Pegamento Aditivo de Agua</field>
+		</record>
+		<record id="ariis_tiposuministro_3" model="ariis.tiposuministro">
+			<field name="name">Toner Cartridge</field>
+		</record>
+		<record id="ariis_tiposuministro_32" model="ariis.tiposuministro">
+			<field name="name">Staple Unit </field>
+		</record>
+		<record id="ariis_tiposuministro_4" model="ariis.tiposuministro">
+			<field name="name">Waste Toner box</field>
+		</record>
+		<record id="ariis_tiposuministro_5" model="ariis.tiposuministro">
+			<field name="name">Tinta</field>
+		</record>
+		<record id="ariis_tiposuministro_6" model="ariis.tiposuministro">
+			<field name="name">Cartucho de tinta</field>
+		</record>
+		<record id="ariis_tiposuministro_7" model="ariis.tiposuministro">
+			<field name="name">Cinta de tinta</field>
+		</record>
+		<record id="ariis_tiposuministro_9" model="ariis.tiposuministro">
+			<field name="name">Image Drum Unit </field>
+		</record>
+		<record id="ariis_tiposuministro_99" model="ariis.tiposuministro">
+			<field name="name">Desconocido</field>
+		</record>
+	</data>
+</odoo>

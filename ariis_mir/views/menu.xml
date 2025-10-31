@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+ 
+	<menuitem name="MIR" 
+				id="ariis_mir.menu_mir"
+				parent="ariis.menu_ariis"
+				sequence="6"   />
+
+	<!-- <menuitem name="Tipo de Suministros"		id="ariis.menu_1_list34" parent="ariis.configuracion_menu" action="ariis.action_tiposuministro" sequence="32"/> -->
+	
+	
+</odoo>

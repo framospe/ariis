@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+    <data>
+   
+	<record model="ir.actions.act_window" id="ariis_mir.action_mir_suministros">
+      <field name="name">Suministros MIR</field>
+      <field name="res_model">ariis.mir.suministro</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+	
+	<record id="ariis_mir.view_mir_suministro_tree" model="ir.ui.view">
+        <field name="name">ariis.mir.suministro.tree</field>
+        <field name="model">ariis.mir.suministro</field>
+        <field name="arch" type="xml">
+			<tree string="Suministros Mir" create="false" >
+				<field name="tipo_id" />
+				<field name="color"  />
+				<field name="numero" />
+				<field name="porcentaje" />
+				<field name="nivel" widget="progress_bar_color"  />								
+            </tree>
+        </field>
+    </record>
+	
+	<menuitem id="ariis_mir.menu_mir_suministros"
+        name="Suministros MIR"
+        parent="ariis_mir.menu_mir"
+        sequence="3"
+        action="ariis_mir.action_mir_suministros"  />
+
+	</data>
+</odoo>

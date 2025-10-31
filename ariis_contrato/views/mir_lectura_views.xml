@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+ 
+	<record id="view_mir_lectura_form" model="ir.ui.view" >
+		<field name="name">ariis.mir.lectura.form.contrato</field> 
+		<field name="model">ariis.mir.lectura</field>
+		<field name="inherit_id" ref="ariis_mir.view_mir_lectura_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//group[@name='mir_lectura_group_referencias_cliente']" position="after">
+                <!-- <group name="mir_lectura_group_contrato"> -->
+                    <group string="Contrato"  name="mir_lectura_group_contrato_contrato" >
+                        <field name="contrato_line"  readonly="1" />
+                        <field name="ariis_contrato_id" readonly="1"/>
+                    </group>
+                <!-- </group> -->
+			</xpath>
+		</field>
+	</record>
+  
+</odoo>

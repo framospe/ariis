@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+ 
+	<!-- <record model="ir.ui.view" id="view_total_mes_form_field_contrato"> -->
+		<!-- <field name="name">ariis.total.mes.form.field.contrato</field>  -->
+		<!-- <field name="model">ariis.total.mes</field> -->
+		<!-- <field name="inherit_id" ref="ariis_mir.view_total_mes_form"/> -->
+		<!-- <field name="arch" type="xml"> -->
+			<!-- <xpath expr="//button[@name='runfromUI']" position="replace"> -->
+				<!-- <button name="runfromUI"	 -->
+						<!-- groups="ariis.ariis_grupo_gestion" -->
+						<!-- type="object"  -->
+						<!-- string="Volver a Tratar"  -->
+						<!-- class="oe_highlight" /> -->
+			<!-- </xpath> -->
+		<!-- </field> -->
+	<!-- </record> -->
+ 
+	<record id="view_total_mes_form_contrato" model="ir.ui.view">
+		<field name="name">ariis.total.mes.form.contrato</field>
+		<field name="model">ariis.total.mes</field>
+		<field name="inherit_id" ref="ariis_mir.view_total_mes_form"/>
+		<field name="arch" type="xml">
+            <!-- <xpath expr="//button[@name='runfromUI']" position="replace"> -->
+                <!-- <button name="runfromUI"	 -->
+                        <!-- groups="ariis.ariis_grupo_gestion" -->
+                        <!-- type="object"  -->
+                        <!-- string="Volver a Tratar"  -->
+                        <!-- class="oe_highlight" /> -->
+            <!-- </xpath> -->
+			<xpath expr="//field[@name='last_report']" position="after">
+                <field name="generation_type"  invisible="1" />
+                <field name="contrato_line"  readonly="1" />
+				<field name="ariis_contrato_id" readonly="1"/>
+                <field name="order"  invisible="generation_type!='order'" />
+                <field name="factura"  invisible="generation_type!='invoice'" />
+                <field name="order"    />
+                <field name="factura"   />
+			</xpath>
+		</field>
+	</record>
+	
+	<record id="view_total_mes_tree_show_tratado" model="ir.ui.view">
+		<field name="name">ariis.total.mes.show.field.tratado</field>
+		<field name="model">ariis.total.mes</field>
+		<field name="inherit_id" ref="ariis_mir.view_total_mes_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='fin_total_pag_color']" position="after">
+				<field name="tratado" widget="boolean_toggle"/>
+				<field name="last_report"/>
+			</xpath>
+		</field>
+	</record>
+ 
+	<record id="act_recurring_totmes" model="ir.actions.act_window">
+		<field name="name">Total Mes de Contrato</field>
+		<field name="res_model">ariis.total.mes</field>
+		<field name="view_ids"
+			   eval="[(5, 0, 0),
+					  (0, 0, {'view_mode': 'tree', 'view_id': ref('ariis_mir.view_total_mes_tree')}),
+					  (0, 0, {'view_mode': 'form', 'view_id': ref('ariis_mir.view_total_mes_form')})]"/>
+		<field name="context">{
+			'search_default_ariis_contrato_id': [active_id],
+			'default_ariis_contrato_id': active_id}
+		</field>
+	</record>
+</odoo>

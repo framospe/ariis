@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+ 
+	<record id="view_lectura_form" model="ir.ui.view" >
+		<field name="name">ariis.lectura.form.contrato</field> 
+		<field name="model">ariis.lectura</field>
+		<field name="inherit_id" ref="ariis_mir.view_lectura_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//group[@name='group_totales']" position="after">
+                <group string="Contrato" invisible="id==False" name="grupo_conrato" >
+					<field name="contrato_line"  readonly="1" />
+                    <field name="ariis_contrato_id" readonly="1"/>
+                </group>
+			</xpath>
+		</field>
+	</record>
+  
+</odoo>

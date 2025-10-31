@@ -1,3 +1,58 @@
+
+# ========================
+# Archivos y directorios de Odoo
+# ========================
+
+# Directorio de datos y logs (generado por Odoo)
+# Este directorio contiene sesiones, archivos adjuntos, logs, etc.
+/odoo_data_dir/
+/data/
+*.log
+log/
+
+# Archivos de caché de Python
 __pycache__/
 *.pyc
+*.o
+*.so
+
+# Archivos de idioma (compilados .mo)
+# Estos archivos se generan al traducir o actualizar módulos.
+*.mo
+
+# Archivos de configuración de Odoo (NO subir credenciales)
+# Si usas un archivo de configuración para la base de datos local, ignóralo.
+# ¡IMPORTANTE! Nunca subas archivos que contengan contraseñas.
 odoo.conf
+local.conf
+openerp-server.conf
+
+# ========================
+# Entornos de desarrollo locales
+# ========================
+
+# Entorno virtual de Python (si lo usas)
+# Es la carpeta donde se instalan las dependencias de Python.
+.venv/
+env/
+venv/
+
+# Paquetes y archivos de instalación
+dist/
+build/
+*.egg-info
+.eggs/
+
+# ========================
+# Herramientas y editores comunes
+# ========================
+
+# IDEs de JetBrains (PyCharm, IntelliJ, etc.)
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Sublime Text
+*.sublime-workspace
+.cache/

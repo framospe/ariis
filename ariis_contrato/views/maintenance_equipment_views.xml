@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+        <record id="hr_equipment_view_form" model="ir.ui.view">
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="ariis_mir.hr_equipment_view_form" />
+            <field name="arch" type="xml"> 
+                <header>
+ 
+					 <button name="crear_contratos_cxc_cron"
+                                string="Añadir a Contrato"                     
+								type="object" 
+								class="oe_stat_button" 
+								icon="fa-unlock" 
+								confirm="Desea Añadir este dispositivo a contrato de Cliente (Se creara el contrato si no existe)?" 
+								groups="ariis.ariis_grupo_gestion" 
+								invisible="contrato_line!=False">
+					</button>
+                </header>
+                <xpath expr="//field[@name='owner_id']" position="after">
+                    <field name="ariis_contrato_id" string="Contrato" options="{'no_create': True}"/>	
+                    <field name="contrato_line" string="Linea de Contrato" options="{'no_create': True}"/>	
+                </xpath>
+            </field>
+        </record>
+    <!-- <record id="hr_equipment_action" model="ir.actions.act_window"> -->
+        <!-- <field name="name">Equipment</field> -->
+        <!-- <field name="res_model">maintenance.equipment</field> -->
+        <!-- <field name="view_mode">kanban,tree,form</field> -->
+        <!-- <field name="view_id" ref="maintenance.hr_equipment_view_kanban"/> -->
+        <!-- <field name="context">{ -->
+            <!-- 'search_default_impresoras_mir': True, -->
+        <!-- }</field> -->
+        <!-- <field name="help" type="html"> -->
+            <!-- <p class="o_view_nocontent_smiling_face"> -->
+                <!-- Add a new equipment -->
+            <!-- </p><p> -->
+                <!-- Track equipment and link it to an employee or department. -->
+                <!-- You will be able to manage allocations, issues and maintenance of your equipment. -->
+            <!-- </p> -->
+        <!-- </field> -->
+    <!-- </record> -->
+</odoo>
+ 

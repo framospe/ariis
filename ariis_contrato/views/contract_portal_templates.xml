@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2020 Tecnativa - Víctor Martínez
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="portal_contract_page_ariis"
+        name="My Contract (Ariis)"
+        inherit_id="contract.portal_contract_page" >
+        <xpath expr="//t[@t-foreach='contract.contract_line_ids']" position="replace">
+            <t t-set="aLineas" t-value="contract.getPortalLineas()" />
+            <t t-foreach="aLineas"  t-as="oLine" >
+                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if oLine['display_type'] == 'line_note' else 'bg-200 font-weight-bold o_line_section' if oLine['display_type'] == 'line_note'   else ''">
+                    <t t-if="oLine['display_type'] == 'line_product'">
+                        <td name="td_name">
+                            <span t-out="oLine['name']" /> 
+                        </td>
+                        <td name="td_quantity" class="text-right" >
+                            <span t-out="oLine['quantity']" /> 
+                        </td>
+                        <td  name="td_price_unit" class="text-right" >
+                            <span  t-out="oLine['price_unit']"  t-options='{"widget": "monetary", "display_currency": contract.currency_id}' digits="0,0000" />
+                        </td>
+                        <td name="td_discount" class="text-right" >
+                            <span t-out="oLine['discount']" /> 
+                        </td>
+                        <td name="td_price_subtotal" class="text-right" >
+                            <span t-out="oLine['price_subtotal']"  t-options='{"widget": "monetary", "display_currency": contract.currency_id}' />
+                        </td>
+                        <td name="td_recurring_interval" class="text-right" >
+                            <span t-esc="oLine['recurring_interval']" /> 
+                            <span t-esc="oLine['recurring_rule_type']" /> 
+                        </td>
+                        <td name="td_recurring_next_date" class="text-right"  >
+                            <span t-esc="oLine['recurring_next_date']" t-options='{"widget": "date"}'/>
+                        </td>
+                    </t>
+                    <t t-if="oLine['display_type'] == 'line_note'">
+                         <td colspan="99">
+                             <span t-out="oLine['name']" /> 
+                        </td>
+                    </t>
+                    <t t-if="oLine['display_type'] == 'line_section'">
+                        <td colspan="99">
+                            <span t-out="oLine['name']" /> 
+                        </td>
+                        <t t-set="current_section" t-value="oLine" />
+                        <t t-set="current_subtotal" t-value="0" />
+                    </t>
+                </tr>
+            </t>
+        </xpath>
+    </template> 
+    
+    <template id="portal_my_home_contract"  inherit_id="contract.portal_my_home_contract" >
+        <!-- <xpath expr="//t[@t-set='title'] and text()='Contracts'" position="before"> -->
+        <xpath expr="//t[contains(@t-value, 'contract_count') ]" position="before">
+            <t t-set="icon" t-value="'/ariis_contrato/static/src/img/tasks.svg'"/>
+            <t t-set="text">Contratos de facturas recurentes</t>
+        </xpath>
+    </template> 
+    
+ </odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+	<!-- Motivos del Servicio -->
+    <record id="ariis_motivosat_grant" model="ir.model.access">
+        <field name="name">Ariis: Motivo Servicio - grant</field>
+        <field name="model_id" ref="ariis_repair.model_ariis_motivosat"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">0</field>
+		<field name="perm_create">0</field>
+		<field name="perm_unlink">0</field>
+    </record>
+</odoo>

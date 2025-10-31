@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="hr_equipment_view_form" model="ir.ui.view">
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="ariis.hr_equipment_view_form" />
+        <field name="arch" type="xml">
+             <xpath expr="//sheet" position="before">
+                <header>
+                    <button	
+                            name="addlecturamir"
+                            groups="ariis.ariis_grupo_responsable,ariis.ariis_grupo_gestion" 
+                            type="object" 
+                            string="Añadir Lectura Manual" 
+                            class="oe_highlight"   
+                    /> 
+                </header>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                 <button  
+                    type="action" name="%(ariis_mir.action_total_mes)d"
+                    class="oe_stat_button" 
+                    invisible="totalmes_ids_count==0"
+                    context="{
+                            'search_default_active'     : True, 
+                            'search_default_dispositivo': active_id,
+                            'default_partner_id'        : partner_id, 
+                            'default_dispositivo'       : active_id 
+                            }" 
+                    icon="fa-calculator">
+                    <field  name="totalmes_ids_count" widget="statinfo"/>
+                </button>
+                <button  
+                    type="action" name="%(ariis_mir.action_lectura)d"
+                     context="{
+                            'search_default_active'         : True,
+                            'search_default_dispositivo_id' : active_id,
+                            'default_cliente'               : partner_id, 
+                            'default_dispositivo_id'        : active_id
+                            }" 
+                    class="oe_stat_button" 
+                    invisible="lecturas_ids_count==0"
+                    icon="fa-file-text">
+                    <field name="lecturas_ids_count" widget="statinfo"/>
+                </button>
+                               
+			</xpath>
+            <xpath expr="//page[@name='general_fechas']" position="after">
+                <page string="Suministros" name="general_information_suministros" invisible="mir==False">					
+                    <field name="suministro_ids" >
+                        <tree default_order="tipo_id,color" domain="[ '|',('state','=','03'),('subestado','=','06')]" >
+                            <field name="tipo_id" />
+                            <field name="color"  />
+                            <field name="subestado" />
+                            <field name="nivel" widget="progressbar"  />
+                            <!-- <field name="nivel" string="%" /> -->
+                            <field name="last_report" string="Ultima Actividad"/>									
+                        </tree>
+                    </field> 
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

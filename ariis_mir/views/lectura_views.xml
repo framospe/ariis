@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+    <data>
+   
+		<record model="ir.actions.act_window" id="ariis_mir.action_lectura">
+		  <field name="name">Lectura de Dispositivo</field>
+		  <field name="res_model">ariis.lectura</field>
+		  <field name="view_mode">tree,form,pivot</field>
+		</record>
+	
+    <record id="view_lectura_tree" model="ir.ui.view">
+        <field name="name">ariis.mir.lectura.tree</field>
+        <field name="model">ariis.lectura</field> 
+        <field name="arch" type="xml">
+			<tree string="Lecturas" create="false">
+				<field name="actual_lectura" string="Fecha de Lectura"/>
+				<field name="partner_id"/>
+				<field name="modelo"/>
+				<field name="dispositivo_id" domain="[('partner_id','=', partner_id),('mir','=',True)]"/>   
+				<field name="previo_total"  string="Total Anterior"  />
+				<field name="actual_total"  string="Total Actual"  />
+				<field name="total_bn" sum="Total Impreso BN" string="Tot. Print BN" type="measure"/>
+				<field name="total_color" sum="Total Impreso Color" string="Tot. Print Color" type="measure"/>
+                <field name="state" widget="badge" decoration-success="state=='02'" decoration-danger="state in ('03' )"/>
+            </tree>
+        </field>
+    </record>
+	
+	<record id="view_lectura_list_filter" model="ir.ui.view">
+        <field name="name">ariis.lectura.select</field>
+        <field name="model">ariis.lectura</field>		
+        <field name="arch" type="xml">
+			<search string="Buscar Lectura">				
+				<field name="actual_lectura"	/>
+				<field name="partner_id" 		/>
+				<field name="dispositivo_id"  	/>
+				<field name="numeroserie"  		/>
+				<filter name="creados_hoy" string="Creados Hoy" domain="[('actual_lectura','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('actual_lectura','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/> 
+				 <separator/>
+				<filter name="sin_contabilizar"	string="Sin Contabilizar" domain="[('state','=','01' )]"/> 
+				<filter name="contabilizados"  	string="Contabilizados" domain="[('state','=','02' )]"/> 
+				<filter name="con_errores" 		string="Con Errores" domain="[('state','=','03' )]"/>
+				<separator/>
+				<group expand="0" string="Group By">
+						<filter name="por_estado" 	string="Por Estado" context="{'group_by':'state'}" />
+						<filter name="por_cliente"	string="Por Cliente" context="{'group_by':'partner_id'}"/>
+						<filter name="por_dispositivo" 	string="Por Dispositivo" context="{'group_by':'dispositivo_id'}"/>
+						<filter name="por_modelo" 	string="Por Modelo" context="{'group_by':'modelo'}"/>
+						<filter name="por_lectura" 	string="Por Fecha Lectura" context="{'group_by':'actual_lectura'}"/>
+						<!-- <filter name="por_serie" 		string="Por Num. Serie" context="{'group_by':'dispositivo_id.lot_id'}"/> -->
+						<!-- <filter name="por_fecha_lectura" 		string="Por Fecha Lectura" context="{'group_by':'actual_lectura'}"/> -->
+						<!-- <filter name="por_fecha_dispositivo" 	string="Por Fecha y Dispositivo" context="{'group_by':['actual_lectura','dispositivo_id']}"/> -->
+						<!-- <filter name="por_fechacliente" 		string="Por Fecha y Cliente" context="{'group_by':['actual_lectura','partner_id']}"/> -->
+				</group>
+			</search>
+        </field>
+    </record>
+	
+		<record id="view_lectura_form" model="ir.ui.view">
+			<field name="name">ariis.lectura.form</field>
+			<field name="model">ariis.lectura</field> 
+			<field name="arch" type="xml">
+				<form string="Lectura de Dispositivo"  create="false"> 
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="01,02,03"/>
+                    </header>
+					<sheet string="Lectura">
+						<group>
+							<group string="Dispositivo" >
+								<field name="partner_id" 
+									readonly="id==False"
+									options="{'no_create': True}" domain="[('is_company','=',True)]"/>
+                                <field name="dispositivo_id" options="{'no_create': True}" />
+                                <field name="numeroserie" invisible="id==False" readonly="1"/>
+                                <!-- <field name="modelo" invisible="id==False" readonly="1"/> -->
+                                <!-- <field name="nombre" readonly="1" /> -->
+							</group>
+                            <group  string="Lectura"  >
+                                <field name="state" widget="badge" decoration-success="state=='02'" decoration-danger="state in ('03' )"/>
+								<field name="origen" readonly="1"/>
+								<field name="last_report" readonly="1"/>
+							</group>
+                         </group>
+                        <group name="grupo_referencias">
+							<group string="Totales" name="group_totales">
+								<field name="totalmes" readonly="1" />
+								<field name="total_bn" string="Total Impreso en BN" />
+								<field name="total_color" string="Tot Impreso en Color" />
+							</group>
+                        </group>
+                        
+						<notebook>
+							<page  string="Lecturas del Mes" name="lecturas_lecturas">
+								<group >
+									<group string="Lectura Actual">
+									 
+										<field name="actual_lectura" string="Leido"/>
+										<field name="actual_total_bn" string="Total BN"/>
+										<field name="actual_total_color" string="Total Color"/>								
+										<field name="actual_total" string="Total Pag."/> 
+									</group>
+									<group string="Lectura Anterior">
+									 
+										<field name="previo_lectura" string="Leido"/>
+										<field name="previo_total_bn" string="Total BN"/>
+										<field name="previo_total_color" string="Total Color"/>								
+										<field name="previo_total" string="Total Pag."/> 
+									</group>
+								</group>
+							</page>
+							<page string="Tratamiento" name="lectura_tratamiento"  >
+								<group>
+									<group>									
+										<field name="errortext" />
+										<field name="errordesc" />									
+									</group>
+								</group>
+							</page>
+						</notebook>
+						
+					
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="ariis_mir.view_lectura_pivot">
+			<field name="name">ariis.lectura.pivot</field>
+			<field name="model">ariis.lectura</field>
+			<field name="arch" type="xml">
+				<pivot string="Lecturas Ariis">
+					<field name="total_bn"		type="measure" string="Total Paginas Impresas en BN" />
+					<field name="total_color"	type="measure" string="Total Paginas Impresas en Color"/>
+					
+					<field name="previo_lectura"		type="measure" invisible="1"/>
+					<field name="previo_total_bn"		type="measure" invisible="1"/>
+					<field name="previo_total_color"	type="measure" invisible="1"/>
+					<field name="previo_total"			type="measure" invisible="1"/>
+					
+					<field name="actual_total_bn"		type="measure" invisible="1"/>
+					<field name="actual_total_color"	type="measure" invisible="1" />
+					<field name="actual_total"			type="measure" invisible="1" />
+					
+					<field name="modelo" 				type="row" />
+					<field name="actual_lectura"		type="row" />
+					<!-- <field name="partner_id"			type="row" /> -->
+				</pivot>
+			</field>
+		</record>
+		
+		<menuitem 	name="Lecturas"	
+					id="ariis_mir.lectura_menu" 		
+					parent="ariis_mir.menu_mir"	
+					action="ariis_mir.action_lectura" 
+					sequence="2"/>
+	
+	</data>
+</odoo>

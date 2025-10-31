@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+	<data noupdate="1">
+		<record id="json_fields_to_read_mails" model="ir.config_parameter">
+			<field name="key">I_FIELDS_MAIL_PARSE</field>
+			<field name="value">
+                {
+                    "Direccion IPv4"             : "ipaddress", 
+                    "Dirección IPv4"             : "ipaddress", 
+                    "IP Address"                 : "ipaddress", 
+                    "Nombre modelo"	             : "modelo", 
+                    "Product Name"               : "modelo",
+                    "Nombre del dispositivo"     : "nombre", 
+                    "Nombre de host"             : "hostname", 
+                    "Host Name"                  : "hostname", 
+                    "Ethernet"                   : "macaddress", 
+                    "Serial No."                 : "serialnumber", 
+                    "Product Serial Number"      : "serialnumber", 
+                    "Total_Color"                : "total_pag_color", 
+                    "Total_BW"                   : "total_pag_mono" ,
+                    "T_TotalPrtPGS"              : "total_pag_mono" 
+                }
+			</field>
+		</record>
+	</data>
+</odoo>

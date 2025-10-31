@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+	<data noupdate="0">
+		<!-- ======================= -->
+		<!-- Motivo de Servicio      -->
+		<!-- ======================= -->
+		<record id="ariis_motivosat_00" model="ariis.motivosat">
+			<field name="name">Sin Definir</field>
+		</record>
+		<record id="ariis_motivosat_01" model="ariis.motivosat">
+			<field name="name">Instalación</field>
+		</record>
+		<record id="ariis_motivosat_02" model="ariis.motivosat">
+			<field name="name">Averia</field>
+		</record>
+		<record id="ariis_motivosat_03" model="ariis.motivosat">
+			<field name="name">Formación</field>
+		</record>
+		<record id="ariis_motivosat_04" model="ariis.motivosat">
+			<field name="name">Entrega Consumible</field>
+		</record>
+		<record id="ariis_motivosat_05" model="ariis.motivosat">
+			<field name="name">Recogida</field>
+		</record>
+		<record id="ariis_motivosat_06" model="ariis.motivosat">
+			<field name="name">Entrega</field>
+		</record>
+		<record id="ariis_motivosat_07" model="ariis.motivosat">
+			<field name="name">Reclamación</field>
+		</record>
+		<record id="ariis_motivosat_08" model="ariis.motivosat">
+			<field name="name">No Responde</field>
+		</record>
+		<record id="ariis_motivosat_09" model="ariis.motivosat">
+			<field name="name">-Sin Definir 1-</field>
+		</record>
+		<record id="ariis_motivosat_10" model="ariis.motivosat">
+			<field name="name">Instalar MIR</field>
+		</record>
+		<record id="ariis_motivosat_11" model="ariis.motivosat">
+			<field name="name">Instalación Interna</field>
+		</record>
+		<record id="ariis_motivosat_12" model="ariis.motivosat">
+			<field name="name">Incidencia</field>
+		</record>
+		<record id="ariis_motivosat_13" model="ariis.motivosat">
+			<field name="name">Revisión</field>
+		</record>
+		<record id="ariis_motivosat_14" model="ariis.motivosat">
+			<field name="name">Preventivo</field>
+		</record>
+		<record id="ariis_motivosat_15" model="ariis.motivosat">
+			<field name="name">Consumibles</field>
+		</record>
+		<record id="ariis_motivosat_16" model="ariis.motivosat">
+			<field name="name">Guardia</field>
+		</record>
+		<record id="ariis_motivosat_17" model="ariis.motivosat">
+			<field name="name">Reiterativa</field>
+		</record>
+		<record id="ariis_motivosat_98" model="ariis.motivosat">
+			<field name="name">Información</field>
+		</record>
+		<record id="ariis_motivosat_99" model="ariis.motivosat">
+			<field name="name">-Sin Definir-</field>
+		</record>
+		 
+	</data>
+	 
+</odoo>

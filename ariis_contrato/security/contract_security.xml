@@ -1,0 +1,15 @@
+<odoo noupdate="1">
+
+	<!-- ==================================================================== -->
+	<!-- Contrato Linea Ariis-->
+	<!-- ==================================================================== -->
+    <record id="contract_line_ariis_grant" model="ir.model.access">
+        <field name="name">Ariis: Contrato Linea - grant</field>
+        <field name="model_id" ref="ariis_contrato.model_contract_line_ariis"/>
+        <field name="group_id" ref="ariis.ariis_grupo_gestion"/>
+		<field name="perm_read">1</field>
+		<field name="perm_write">1</field>
+		<field name="perm_create">1</field>
+		<field name="perm_unlink">1</field>
+    </record>
+</odoo>

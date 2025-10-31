@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odoo>
+	<data>
+		<record model="ir.actions.act_window" id="ariis_mir.action_total_mes">
+		  <field name="name">Total Mes</field>
+		  <field name="res_model">ariis.total.mes</field>
+		  <field name="view_mode">tree,form,pivot,activity</field>
+		</record>
+		<record model="ir.actions.act_window" id="ariis_mir.action_total_mes_este">
+		  <field name="name">Total Mes</field>
+		  <field name="res_model">ariis.total.mes</field>
+		  <field name="context">{"search_default_estemes":1 }</field>
+		  <field name="view_mode">tree,form,pivot,activity</field>
+		</record>
+		<record id="view_total_mes_tree" model="ir.ui.view">
+			<field name="name">ariis.total.mes.tree</field>
+			<field name="model">ariis.total.mes</field>
+			<field name="arch" type="xml">
+				<tree string="Total Mes" default_order="creado desc" create="false" >
+					<field name="periodo" />
+					<field name="cliente"  />
+					<field name="dispositivo" />
+					<field name="lot_id" string="Nº de Serie"/>
+					<field name="fin_total_pag_bn"  />
+					<field name="fin_total_pag_color"  />				
+				</tree>
+			</field>
+		</record>
+	
+		<record id="view_total_mes_form" model="ir.ui.view">
+			<field name="name">ariis.total.mes.form</field>
+			<field name="model">ariis.total.mes</field> 
+			<!-- <field name="perm_write" eval="False"/> -->
+			<field name="arch" type="xml">
+				<form string="Total Mes" create="false" >
+					<header>
+					<button name="runfromUI"	
+						groups="ariis.ariis_grupo_gestion"  
+						type="object" 
+						string="Volver a Tratar" 
+						class="oe_highlight" />
+                    <button	
+                        name="addlecturamir"
+                        invisible="tratado==True"
+                        groups="ariis.ariis_grupo_responsable,ariis.ariis_grupo_gestion" 
+                        type="object" 
+                        string="Añadir Lectura Manual" 
+                        class="oe_highlight" />
+					</header>
+					<sheet string="Total Mes">
+                        
+						<group>
+							<group >
+								<field name="iscolor" invisible="1" />
+                                <field name="tratado" invisible="1"/>
+                                <field name="crear" invisible="1" />
+                                
+								<field name="cliente" />
+								<field name="dispositivo" />
+								<field name="lot_id" string="Nº de Serie"/>
+								<field name="periodo" />
+                                <field name="tratado"/>
+							</group>
+							<group >
+								
+                                <field name="last_report" />
+							</group>
+						</group>
+						<group>
+							<group string="Periodo de Inicio">
+								<field name="ini_periodo" string="Fecha Inicio"/>
+								<field name="ini_total_pag_bn" />
+								<field name="ini_total_pag_color" invisible="iscolor==False" />
+							</group>
+							<group string="Periodo Fin">						
+								<field name="fin_periodo" string="Fecha Fin"/>		
+								<field name="fin_total_pag_bn" />
+								<field name="fin_total_pag_color" invisible="iscolor==False" />
+							</group>
+						</group>
+						<notebook>
+							<page string="Lecturas del Mes" name="total_lectura_mes">
+								<field name="lecturas" >
+									<tree string="Lecturas" decoration-muted="state in ('01')" decoration-info="state=='03'">
+										<field name="actual_lectura" string="Fecha de Lectura"/>
+										<field name="partner_id" />
+										<field name="total_bn" sum="Total Impreso BN" string="Tot. Print BN"/>
+										<field name="total_color" sum="Total Impreso Color" string="Tot. Print Color" column_invisible="parent.iscolor==False"/>
+                                        <field name="last_report"/>
+                                        <field name="state" widget="badge"  decoration-success="state=='02'" decoration-danger="state in ('03' )"/>
+                                        <field name="origen"/>
+									</tree>
+								</field>
+							</page>
+							<page string="Tratamiento" name="mir_totalmes_tratamiento" invisible="tratado==False">
+								<group>
+									<group colspan="2">									
+										<field name="errortext" />
+										<field name="errordesc" />									
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+                    <div class="oe_chatter">
+						<!-- <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/> -->
+						<field name="activity_ids" widget="mail_activity"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="ariis_mir.total_mes_list_filter">
+			<field name="name">ariis.total.mes.select</field> 
+			<field name="model">ariis.total.mes</field>
+			<field name="arch" type="xml">
+				<search string="Lecturas">
+					<field name="cliente"/>
+					<field name="dispositivo"/>
+					<field name="lot_id"/>
+					<filter string="Sin Tratar" name="sintratar" domain="[('tratado','=',False )]"/> 
+					<filter string="Mes Actual" name="estemes" domain="[('periodo','=', time.strftime('%%Y-%%m-01'))]"  />
+					<filter string="Mes Anterior" name="mesanterior" domain="[('periodo','&gt;=',(context_today()-relativedelta(months=1)).strftime('%%Y-%%m-01')),('periodo','&lt;',time.strftime('%%Y-%%m-01'))]"/>
+					<group expand="0" string="Group By">
+						<filter name="por_periodo" string="Por Periodo" domain="[]" context="{'group_by':'periodo'}"/>
+						<filter name="por_cliente" string="Por Cliente" domain="[]" context="{'group_by':'cliente'}"/>
+						<filter name="por_error" string="Por Error" domain="[]" context="{'group_by':'errortext'}"/>
+						<filter name="por_detalle_error" string="Por Detalle Error" domain="[]" context="{'group_by':'errordesc'}"/>
+					 </group>
+				</search>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="ariis_mir.view_total_mes_pivot">
+			<field name="name">ariis.total.mes.pivot</field>
+			<field name="model">ariis.total.mes</field>
+			<field name="arch" type="xml">
+				<pivot string="Total Mes Ariis">
+					<field name="fin_total_pag_bn"		type="measure" />
+					<field name="fin_total_pag_color"	type="measure"  />
+				</pivot>
+			</field>
+		</record>
+		
+		<menuitem id="ariis.menu_total_mes"
+			name="Total Mes"
+			parent="ariis_mir.menu_mir"
+			sequence="3"
+			groups="ariis.ariis_grupo_gestion"
+			action="ariis_mir.action_total_mes_este" />
+		
+		<record id="ariis.ariis_grupo_gestion" model="res.groups">
+			<field name="menu_access" eval="[(4, ref('ariis.menu_total_mes'))]"/>
+		</record>
+		
+	</data>
+</odoo>
