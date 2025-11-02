@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_view_form_fsm_comercial" model="ir.ui.view">
+        <field name="name">res.partner.form.fsm.comercial</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="last_sale_date" readonly="1"/>
+                <field name="is_inactive_customer" readonly="1" widget="badge" 
+                       attrs="{'invisible': [('is_inactive_customer', '=', False)]}"/>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <record id="res_partner_view_search_fsm_comercial" model="ir.ui.view">
+        <field name="name">res.partner.search.fsm.comercial</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            
+            <filter name="customer" position="after">
+                <filter string="Clientes Inactivos (6M+)" name="inactive_customers" domain="[('is_inactive_customer', '=', True)]"/>
+                </filter>
+            
+        </field>
+    </record>
+</odoo>
