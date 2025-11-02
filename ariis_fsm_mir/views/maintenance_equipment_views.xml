@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="maintenance_equipment_view_form_mir_extension" model="ir.ui.view">
+        <field name="name">maintenance.equipment.form.mir.extension</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+            
+            <field name="user_id" position="after">
+                <field name="mir_config_id"/>
+                <group string="Última Lectura Consolidada">
+                    <field name="last_reading_bn" readonly="1"/>
+                    <field name="last_reading_color" readonly="1"/>
+                    <field name="last_reading_date" readonly="1"/>
+                </group>
+            </field>
+            
+        </field>
+    </record>
+</odoo>
