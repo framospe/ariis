@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="maintenance_equipment_view_form_fsm_extension" model="ir.ui.view">
+        <field name="name">maintenance.equipment.form.fsm.extension</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+            
+            <field name="category_id" position="after">
+                <group string="Control SAT y Contrato">
+                    <field name="interventions_count" readonly="1" help="Número total de intervenciones de Field Service realizadas en este equipo."/>
+                    <field name="genera_facturacion" readonly="1" widget="boolean_toggle" help="Indica si este equipo está asociado a un contrato activo que genera facturación (Requisito comercial/gestión de activos)."/>
+                </group>
+            </field>
+            
+        </field>
+    </record>
+    
+</odoo>
